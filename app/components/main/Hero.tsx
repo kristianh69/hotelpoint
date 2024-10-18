@@ -2,23 +2,20 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="mx-auto h-[500px] flex flex-col md:flex-row justify-between pt-32">
-      {" "}
-      {/* Zvýšený padding-top */}
-      {/* Text na ľavej strane */}
-      <div className="flex flex-col w-full gap-4 items-center justify-center text-center p-4 md:w-[50%]">
-        <div className="flex flex-col h-full justify-center">
-          <h1 className="text-2xl font-bold">Welcome to HotelPoint</h1>
-          <p>This is the main content of the homepage.</p>
-        </div>
-      </div>
-      {/* Obrázok na pravej strane */}
-      <div className="md:w-[50%] w-full h-[500px] relative">
+    <div className="bg-gradient-to-r from-gray-800 to-black h-screen flex justify-center items-center">
+      <div className="absolute inset-0 flex justify-center items-center">
         <img
           src="/hotel.png"
-          alt="Image Description"
-          className="h-full w-full object-cover hidden md:block" // Obrázok sa zobrazuje iba na md a vyšších obrazovkách
+          alt="Hotel"
+          className=" shadow-lg opacity-30"
+          width={1000}
+          height={1000}
         />
+      </div>
+      <div className="text-center ">
+        <h1 className="text-5xl font-bold text-white">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </h1>
       </div>
     </div>
   );

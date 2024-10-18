@@ -3,16 +3,15 @@
 import Image from "next/image";
 import React, { useState } from "react";
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-neutral-800 fixed top-0 left-0 right-0 mx-auto text-white mt-4 rounded-xl max-w-6xl w-full z-50">
+    <nav className="bg-gray-800  fixed top-0 left-0 right-0 mx-auto  text-white w-full z-50 border-b-2">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo na ľavej strane */}
           <div className="flex items-center justify-center text-center">
             <Image
               width={50}
@@ -21,16 +20,17 @@ const Navbar: React.FC = () => {
               src="/logo.png"
               alt="Logo"
             />
+
             <span className="font-bold text-2xl">HotelPoint.</span>
           </div>
-          {/* Navigačné položky na pravej strane */}
+
           <div className="hidden md:ml-6 md:flex space-x-4">
-            <NavItem href="#" label="Registrácia" />
+            <NavItem href="" label="Rezervacie" />
             <div className="border-2">
-              <NavItem href="#" label="Rezervácia" />
+              <NavItem href="/registracia" label="Registrácia" />
             </div>
             <div>
-              <NavItem href="#" label="Prihlásenie" />
+              <NavItem href="/login" label="Prihlásenie" />
             </div>
           </div>
           {/* Hamburger menu */}

@@ -1,32 +1,41 @@
-import { UtensilsCrossedIcon } from "lucide-react";
 import React from "react";
 
-const About = () => {
+const Hero = () => {
   return (
-    <div className="mt-10 flex flex-col justify-between lg:flex-row gap-5 p-5">
-      <div className="flex p-5 flex-col gap-3 justify-center items-center text-center bg-neutral-500">
-        <UtensilsCrossedIcon className="w-24 h-24" />
-        <p className="font-medium text-xl ">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro
-          provident commodi
+    <div className="bg-gradient-to-r from-gray-800 to-black min-h-screen flex flex-col items-center justify-center py-10">
+      {" "}
+      <div className="flex items-center justify-start p-4 w-full">
+        <img
+          src="/hotel.png"
+          alt="Hotel"
+          className="w-full max-w-xs md:max-w-md mr-4 -ml-10"
+        />
+        <p className="text-2xl font-bold text-white">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
       </div>
-      <div className="flex p-5 flex-col gap-3 justify-center items-center text-center bg-neutral-500">
-        <UtensilsCrossedIcon className="w-24 h-24" />
-        <p className="font-medium text-xl ">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro
-          provident commodi
+      <div className="flex items-center justify-start p-4 w-full">
+        <img
+          src="/hotel.png"
+          alt="Hotel"
+          className="w-full max-w-xs md:max-w-md mr-4 -ml-10"
+        />
+        <p className="text-2xl font-bold text-white">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
       </div>
-      <div className="flex p-5 flex-col gap-3 justify-center items-center text-center bg-neutral-500">
-        <UtensilsCrossedIcon className="w-24 h-24" />
-        <p className="font-medium text-xl ">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Porro
-          provident commodi
+      <div className="flex items-center justify-start p-4 w-full">
+        <img
+          src="/hotel.png"
+          alt="Hotel"
+          className="w-full max-w-xs md:max-w-md mr-4 -ml-10"
+        />
+        <p className="text-2xl font-bold text-white">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
         </p>
       </div>
     </div>
   );
 };
 
-export default About;
+export default Hero;
