@@ -20,8 +20,9 @@ const Navbar = () => {
               src="/logo.png"
               alt="Logo"
             />
-
-            <span className="font-bold text-2xl">HotelPoint.</span>
+            <a href="/">
+              <span className="font-bold text-2xl">HotelPoint</span>
+            </a>
           </div>
 
           <div className="hidden md:ml-6 md:flex space-x-4">
@@ -34,7 +35,7 @@ const Navbar = () => {
             </div>
           </div>
           {/* Hamburger menu */}
-          <div className="md:hidden flex justify-center items-center">
+          <div className="md:hidden flex justify-center items-center ">
             <button
               onClick={toggleMenu}
               className="text-gray-400 hover:text-white"
@@ -74,9 +75,9 @@ const Navbar = () => {
       {/* Mobilné menu */}
       <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
-          <NavItem href="#" label="Registrácia" mobile />
-          <NavItem href="#" label="Rezervácia" mobile />
-          <NavItem href="#" label="Prihlásenie" mobile />
+          <NavItem href="/registracia" label="Registrácia" mobile />
+          <NavItem href="" label="Rezervácia" mobile />
+          <NavItem href="/login" label="Prihlásenie" mobile />
         </div>
       </div>
     </nav>

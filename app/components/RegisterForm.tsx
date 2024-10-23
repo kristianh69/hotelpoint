@@ -20,7 +20,10 @@ const RegisterForm = () => {
 
   return (
     <div className="flex items-center justify-center h-screen">
-      <form className="bg-white p-6 rounded shadow-md" onSubmit={handleSubmit}>
+      <form
+        className="bg-gray-400 py-10 px-20  rounded-2xl shadow-md"
+        onSubmit={handleSubmit}
+      >
         <h2 className="mb-4 text-lg font-bold">Registrácia</h2>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <div className="mb-4">
@@ -53,6 +56,10 @@ const RegisterForm = () => {
             required
           />
         </div>
+
+        <p className="mb-4 text-blue-600 underline">
+          <a href="/login"> Prihlasiť sa </a>
+        </p>
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"

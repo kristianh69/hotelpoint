@@ -1,7 +1,5 @@
-// app/layout.tsx
-import "./global.css";
-
 import Navbar from "./components/Navbar";
+import "./global.css";
 
 export const metadata = {
   title: "My App",
