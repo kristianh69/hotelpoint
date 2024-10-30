@@ -4,23 +4,26 @@ import sequelize from "./index";
 class RoomBooking extends Model {
   declare RoomId: number;
   declare BookingId: number;
-
 }
 
 RoomBooking.init(
   {
-    RoomId:{
+    RoomId: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey:true,
+      allowNull: false,
+      primaryKey: true,
     },
-    
-    BookingId:{
+    BookingId: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
-    
+      allowNull: false,
+      primaryKey: true,
+    },
   },
-  { sequelize, timestamps: true }
+  {
+    sequelize,
+    modelName: "RoomBooking",
+    timestamps: true,
+  }
 );
 
 RoomBooking.sync({ alter: true });
