@@ -1,10 +1,10 @@
 import React from "react";
-import RegisterForm from "../../components/RegisterForm";
+import ReservationPage from "../../components/Reservation";
 
 const page = () => {
   return (
     <div>
-      <RegisterForm />
+      <ReservationPage />
     </div>
   );
 };
