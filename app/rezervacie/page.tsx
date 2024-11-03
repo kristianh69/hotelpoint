@@ -3,7 +3,6 @@
 import { useState } from "react";
 import ReservationCard from "@/components/ResrvationCard";
 
-// Typ pre izby
 type Room = {
   id: number;
   name: string;
@@ -12,7 +11,6 @@ type Room = {
   imageUrl?: string;
 };
 
-// Ukážkové údaje o izbách
 const sampleRooms: Room[] = [
   {
     id: 1,
@@ -28,7 +26,6 @@ const sampleRooms: Room[] = [
     price: 90,
     imageUrl: "/obr3.png",
   },
-  // Môžete pridať viac miestností
 ];
 
 const ReservationsPage = () => {

@@ -1,13 +1,13 @@
-// components/ReservationCard.tsx
 "use client";
 
+import Image from "next/image";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardFooter,
-} from "@/components/ui//card";
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 type Room = {
@@ -20,17 +20,21 @@ type Room = {
 
 type ReservationCardProps = {
   room: Room;
-  onReserve: () => void; // Pridaný prop na spracovanie rezervácie
+  onReserve: () => void;
 };
 
 const ReservationCard = ({ room, onReserve }: ReservationCardProps) => (
   <Card className="w-full">
     {room.imageUrl && (
-      <img
-        src={room.imageUrl}
-        alt={room.name}
-        className="w-full h-40 object-cover"
-      />
+      <div className="relative w-full h-40">
+        <Image
+          src={room.imageUrl}
+          alt={room.name}
+          layout="fill"
+          objectFit="cover"
+          className="rounded-t-lg"
+        />
+      </div>
     )}
     <CardHeader>
       <CardTitle>{room.name}</CardTitle>

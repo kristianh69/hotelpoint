@@ -13,20 +13,22 @@ const Navbar = () => {
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-center text-center">
-            <Image
-              width={50}
-              height={50}
-              className="h-16 w-auto"
-              src="/logo.png"
-              alt="Logo"
-            />
+            <a href="/">
+              <Image
+                width={50}
+                height={50}
+                className="h-16 w-auto"
+                src="/logo.png"
+                alt="Logo"
+              />
+            </a>
             <a href="/">
               <span className="font-bold text-2xl">HotelPoint</span>
             </a>
           </div>
 
           <div className="hidden md:ml-6 md:flex space-x-4">
-            <NavItem href="" label="Rezervacie" />
+            <NavItem href="/rezervacie" label="Rezervacie" />
             <div className="border-2">
               <NavItem href="/registracia" label="Registrácia" />
             </div>
@@ -76,7 +78,7 @@ const Navbar = () => {
       <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
           <NavItem href="/registracia" label="Registrácia" mobile />
-          <NavItem href="" label="Rezervácia" mobile />
+          <NavItem href="/reyervacie" label="Rezervácia" mobile />
           <NavItem href="/login" label="Prihlásenie" mobile />
         </div>
       </div>
