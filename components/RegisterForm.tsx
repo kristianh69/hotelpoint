@@ -3,35 +3,72 @@
 import React, { useState } from "react";
 
 const RegisterForm = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === "" || email === "" || password === "") {
+    if (name === "" || surname === "" || email === "" || password === "") {
       setError("Prosím vyplňte všetky polia");
-    } else {
-      setError("");
-      console.log("Registrujem:", { username, email, password });
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, surname, email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Niečo sa pokazilo pri registrácii.");
+        return;
+      }
+
+      console.log("Úspešne zaregistrovaný:", data);
+      window.location.href = "/login"; // Presmerovanie na stránku prihlásenia
+    } catch (error) {
+      setError("Chyba pri registrácii. Skúste to neskôr.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
       <form
-        className="bg-gray-400 py-10 px-20  rounded-2xl shadow-md"
+        className="bg-gray-400 py-10 px-20 rounded-2xl shadow-md"
         onSubmit={handleSubmit}
       >
         <h2 className="mb-4 text-lg font-bold">Registrácia</h2>
         {error && <p className="mb-4 text-red-500">{error}</p>}
         <div className="mb-4">
-          <label className="block text-gray-700">Užívateľské meno:</label>
+          <label className="block text-gray-700">Meno:</label>
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="mt-1 p-2 border border-gray-300 rounded w-full"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Priezvisko:</label>
+          <input
+            type="text"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
             className="mt-1 p-2 border border-gray-300 rounded w-full"
             required
           />
@@ -58,13 +95,14 @@ const RegisterForm = () => {
         </div>
 
         <p className="mb-4 text-blue-600 underline">
-          <a href="/login"> Prihlasiť sa </a>
+          <a href="/login"> Prihlásiť sa </a>
         </p>
         <button
           type="submit"
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          disabled={loading}
         >
-          Registrovať
+          {loading ? "Registrujem..." : "Registrovať"}
         </button>
       </form>
     </div>

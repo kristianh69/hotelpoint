@@ -1,28 +1,40 @@
 "use client";
 
 import React, { useState } from "react";
+import { signIn } from "next-auth/react";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would handle your login logic, e.g. API call
+
     if (email === "" || password === "") {
       setError("Please fill in all fields");
+      return;
+    }
+
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (result?.error) {
+      setError("Invalid email or password");
     } else {
       setError("");
-      // Perform login action
-      console.log("Logging in with:", { email, password });
+      console.log("User successfully logged in");
+      // Prípadne môžeš presmerovať používateľa na inú stránku
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
       <form
-        className="bg-gray-400 py-10 px-20  rounded-2xl shadow-md "
+        className="bg-gray-400 py-10 px-20 rounded-2xl shadow-md"
         onSubmit={handleSubmit}
       >
         <h2 className="mb-4 text-lg font-bold">Login</h2>
@@ -46,9 +58,8 @@ const LoginForm: React.FC = () => {
             className="mt-1 p-2 border border-gray-300 rounded w-full"
             required
           />
-
           <p className="mt-2 text-blue-600 underline">
-            <a href="/registracia"> Nemam učet </a>
+            <a href="/registracia">Nemam učet</a>
           </p>
         </div>
 
