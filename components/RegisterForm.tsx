@@ -2,17 +2,17 @@
 
 import React, { useState } from "react";
 
-const RegisterForm = () => {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+const RegisterForm: React.FC = () => {
+  const [name, setName] = useState<string>("");
+  const [surname, setSurname] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name === "" || surname === "" || email === "" || password === "") {
+    if (!name || !surname || !email || !password) {
       setError("Prosím vyplňte všetky polia");
       return;
     }
@@ -26,7 +26,12 @@ const RegisterForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, surname, email, password }),
+        body: JSON.stringify({
+          name,
+          surname,
+          email,
+          password,
+        }),
       });
 
       const data = await response.json();
@@ -37,7 +42,7 @@ const RegisterForm = () => {
       }
 
       console.log("Úspešne zaregistrovaný:", data);
-      window.location.href = "/login"; // Presmerovanie na stránku prihlásenia
+      window.location.href = "/login"; // Redirect to login page
     } catch (error) {
       setError("Chyba pri registrácii. Skúste to neskôr.");
     } finally {

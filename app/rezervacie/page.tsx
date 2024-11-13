@@ -1,46 +1,124 @@
 "use client";
 
-import { useState } from "react";
-import ReservationCard from "@/components/ResrvationCard";
+import React, { useState } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  ColumnDef,
+} from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-type Room = {
+// Typ pre záznam tabuľky
+interface ReservationRecord {
   id: number;
   name: string;
-  description: string;
+  email: string;
+  startDate: string;
+  endDate: string;
+  guests: number;
   price: number;
-  imageUrl?: string;
-};
+}
 
-const sampleRooms: Room[] = [
+const initialData: ReservationRecord[] = [
   {
     id: 1,
-    name: "Izba s výhľadom na more",
-    description: "Krásna izba s výhľadom na more.",
-    price: 120,
-    imageUrl: "/obr3.png",
+    name: "Ján Novák",
+    email: "jan.novak@example.com",
+    startDate: "2024-11-01",
+    endDate: "2024-11-05",
+    guests: 2,
+    price: 300,
   },
   {
     id: 2,
-    name: "Štandardná izba",
-    description: "Pohodlná štandardná izba.",
-    price: 90,
-    imageUrl: "/obr3.png",
+    name: "Mária Kováčová",
+    email: "maria.kovacova@example.com",
+    startDate: "2024-11-10",
+    endDate: "2024-11-15",
+    guests: 4,
+    price: 600,
   },
 ];
 
-const ReservationsPage = () => {
-  const [rooms, setRooms] = useState<Room[]>(sampleRooms);
+export default function ReservationTable() {
+  const [data, setData] = useState<ReservationRecord[]>(initialData);
+
+  // Definícia stĺpcov
+  const columns: ColumnDef<ReservationRecord>[] = [
+    { header: "Meno", accessorKey: "name" },
+    { header: "Email", accessorKey: "email" },
+    { header: "Od kedy", accessorKey: "startDate" },
+    { header: "Do kedy", accessorKey: "endDate" },
+    { header: "Počet hostí", accessorKey: "guests" },
+    { header: "Cena", accessorKey: "price" },
+    {
+      header: "Akcie",
+      cell: ({ row }) => (
+        <Button
+          variant="destructive"
+          onClick={() => handleDelete(row.original.id)}
+        >
+          Odstrániť
+        </Button>
+      ),
+    },
+  ];
+
+  // Funkcia na odstránenie záznamu
+  const handleDelete = (id: number) => {
+    setData((prevData) => prevData.filter((record) => record.id !== id));
+  };
+
+  // Inicializácia tabuľky
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Rezervácie</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-        {rooms.map((room) => (
-          <ReservationCard key={room.id} room={room} />
-        ))}
+    <div className="flex justify-center mt-32">
+      <div className="w-full max-w-4xl bg-white p-6 shadow-lg rounded-lg">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-center font-semibold"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="text-center">
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="p-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
-};
-
-export default ReservationsPage;
+}

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
+import * as DropdownMenu from "@/components/ui/dropdown-menu"; // Adjust the path accordingly
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +10,7 @@ const Navbar = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-gray-800  fixed top-0 left-0 right-0 mx-auto  text-white w-full z-50 border-b-2">
+    <nav className="bg-gray-800 fixed top-0 left-0 right-0 mx-auto text-white w-full z-50 border-b-2">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-center text-center">
@@ -28,16 +29,36 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:ml-6 md:flex space-x-4">
-            <NavItem href="/rezervacie" label="Rezervacie" />
+            <NavItem href="/rezervovanie" label="Rezervacie" />
             <div className="border-2">
               <NavItem href="/registracia" label="Registrácia" />
             </div>
             <div>
               <NavItem href="/login" label="Prihlásenie" />
             </div>
+
+            <DropdownMenu.DropdownMenu>
+              <DropdownMenu.DropdownMenuTrigger>
+                Možnosti
+              </DropdownMenu.DropdownMenuTrigger>
+              <DropdownMenu.DropdownMenuContent>
+                <DropdownMenu.DropdownMenuItem>
+                  <a href="/addhotel">
+                    <button>Pridať hotel</button>
+                  </a>
+                </DropdownMenu.DropdownMenuItem>
+                <DropdownMenu.DropdownMenuItem>
+                  <a href="/rezervacie">
+                    {" "}
+                    <button>Rezervácie</button>
+                  </a>
+                </DropdownMenu.DropdownMenuItem>
+              </DropdownMenu.DropdownMenuContent>
+            </DropdownMenu.DropdownMenu>
           </div>
+
           {/* Hamburger menu */}
-          <div className="md:hidden flex justify-center items-center ">
+          <div className="md:hidden flex justify-center items-center">
             <button
               onClick={toggleMenu}
               className="text-gray-400 hover:text-white"
@@ -74,11 +95,11 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobilné menu */}
+      {/* Mobile Menu */}
       <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1">
           <NavItem href="/registracia" label="Registrácia" mobile />
-          <NavItem href="/reyervacie" label="Rezervácia" mobile />
+          <NavItem href="/rezervacie" label="Rezervácia" mobile />
           <NavItem href="/login" label="Prihlásenie" mobile />
         </div>
       </div>
