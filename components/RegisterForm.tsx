@@ -45,6 +45,7 @@ const RegisterForm: React.FC = () => {
       window.location.href = "/login"; // Redirect to login page
     } catch (error) {
       setError("Chyba pri registrácii. Skúste to neskôr.");
+      console.log(error);
     } finally {
       setLoading(false);
     }
