@@ -29,21 +29,13 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:ml-6 md:flex space-x-4">
-            <NavItem href="/rezervovanie" label="Rezervacie" />
-            <div className="border-2">
-              <NavItem href="/registracia" label="Registrácia" />
-            </div>
-            <div>
-              <NavItem href="/login" label="Prihlásenie" />
-            </div>
-
             <DropdownMenu.DropdownMenu>
               <DropdownMenu.DropdownMenuTrigger>
                 Možnosti
               </DropdownMenu.DropdownMenuTrigger>
               <DropdownMenu.DropdownMenuContent>
                 <DropdownMenu.DropdownMenuItem>
-                  <a href="/addhotel">
+                  <a href="/addroom">
                     <button>Pridať hotel</button>
                   </a>
                 </DropdownMenu.DropdownMenuItem>
@@ -55,6 +47,13 @@ const Navbar = () => {
                 </DropdownMenu.DropdownMenuItem>
               </DropdownMenu.DropdownMenuContent>
             </DropdownMenu.DropdownMenu>
+          </div>
+          <NavItem href="/rezervovanie" label="Rezervacie" />
+          <div className="border-2">
+            <NavItem href="/registracia" label="Registrácia" />
+          </div>
+          <div>
+            <NavItem href="/login" label="Prihlásenie" />
           </div>
 
           {/* Hamburger menu */}
