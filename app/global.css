@@ -12,16 +12,6 @@ body {
   }
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Kablammo&family=Press+Start+2P&display=swap");
-
-.kablammo {
-  font-family: "Kablammo", system-ui;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings: "MORF" 0;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;

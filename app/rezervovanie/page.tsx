@@ -1,46 +1,42 @@
 "use client";
 
-import { useState } from "react";
-import ReservationCard from "@/components/ResrvationCard";
+import React, { useState, useEffect } from "react";
 
-type Room = {
+// Typ pre záznam o izbe
+interface Room {
   id: number;
   name: string;
   description: string;
+  numberOfBeds: number;
   price: number;
-  imageUrl?: string;
-};
+}
 
-const sampleRooms: Room[] = [
-  {
-    id: 1,
-    name: "Izba s výhľadom na more",
-    description: "Krásna izba s výhľadom na more.",
-    price: 120,
-    imageUrl: "/obr3.png",
-  },
-  {
-    id: 2,
-    name: "Štandardná izba",
-    description: "Pohodlná štandardná izba.",
-    price: 90,
-    imageUrl: "/obr3.png",
-  },
-];
+export default function RoomList() {
+  const [rooms, setRooms] = useState<Room[]>([]);
 
-const ReservationsPage = () => {
-  const [rooms, setRooms] = useState<Room[]>(sampleRooms);
+  useEffect(() => {
+    const fetchRooms = async () => {
+      const response = await fetch("../../pages/api/rooms.ts");
+      const data = await response.json();
+      setRooms(data);
+    };
 
+    fetchRooms();
+  }, []);
+
+  // Zobrazenie zoznamu izieb
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Rezervácie</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+    <div className="p-4">
+      <ul className="space-y-4">
         {rooms.map((room) => (
-          <ReservationCard key={room.id} room={room} />
+          <li key={room.id} className="border p-4 rounded shadow">
+            <h2 className="text-lg font-semibold">{room.name}</h2>
+            <p>{room.description}</p>
+            <p>Počet postelí: {room.numberOfBeds}</p>
+            <p>Cena: {room.price} €</p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
-};
-
-export default ReservationsPage;
+}
