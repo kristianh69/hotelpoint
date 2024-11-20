@@ -2,7 +2,7 @@ import { DataTypes, Model } from "sequelize";
 import sequelize from "./index";
 
 class User extends Model {
-  declare id: number;
+  declare id: string;
   declare email: string;
   declare role: string;
   declare name: string;
@@ -43,7 +43,5 @@ User.init(
   },
   { sequelize, timestamps: true }
 );
-
-User.sync({ alter: true });
 
 export default User;

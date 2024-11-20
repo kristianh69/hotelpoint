@@ -42,7 +42,7 @@ const AddRoomForm = () => {
     });
 
     try {
-      const response = await fetch("../pages/api/createroom.ts", {
+      const response = await fetch("api/createroom", {
         method: "POST",
         body: data,
       });

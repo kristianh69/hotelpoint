@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { signIn } from "next-auth/react";
-
+import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const session = useSession();
+  if (session.status === "authenticated") redirect("/");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

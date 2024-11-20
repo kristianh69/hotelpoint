@@ -44,6 +44,4 @@ Room.init(
   { sequelize, timestamps: true }
 );
 
-Room.sync({ alter: true });
-
 export default Room;

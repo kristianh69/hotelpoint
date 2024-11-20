@@ -3,10 +3,11 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import * as DropdownMenu from "@/components/ui/dropdown-menu";
+import { signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const session = useSession();
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
@@ -28,9 +29,11 @@ const Navbar = () => {
           </div>
           <div className="relative  ml-auto ">
             <DropdownMenu.DropdownMenu>
-              <DropdownMenu.DropdownMenuTrigger className="px-3 py-2 rounded-md hover:bg-gray-700">
-                Možnosti
-              </DropdownMenu.DropdownMenuTrigger>
+              {session.status === "authenticated" && (
+                <DropdownMenu.DropdownMenuTrigger className="px-3 py-2 rounded-md hover:bg-gray-700">
+                  Možnosti
+                </DropdownMenu.DropdownMenuTrigger>
+              )}
               <DropdownMenu.DropdownMenuContent>
                 <DropdownMenu.DropdownMenuItem>
                   <a href="/addroom">Pridať hotel</a>
@@ -45,8 +48,14 @@ const Navbar = () => {
           {/* Desktop menu */}
           <div className="hidden md:flex space-x-4">
             <NavItem href="/rezervovanie" label="Rezervácie" />
-            <NavItem href="/registracia" label="Registrácia" />
-            <NavItem href="/login" label="Prihlásenie" />
+            {session.status === "authenticated" ? (
+              <button onClick={() => signOut()}>Odhlásiť</button>
+            ) : (
+              <>
+                <NavItem href="/registracia" label="Registrácia" />
+                <NavItem href="/login" label="Prihlásenie" />
+              </>
+            )}
           </div>
 
           {/* Hamburger menu (mobilné zariadenia) */}
