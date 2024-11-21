@@ -3,7 +3,7 @@ import Room from "../../database/rooms";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const rooms = await Room.findAll();
-  rooms;
+  res.status(200).json(rooms);
 };
 
 export default handler;

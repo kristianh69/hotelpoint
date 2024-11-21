@@ -26,6 +26,4 @@ RoomBooking.init(
   }
 );
 
-RoomBooking.sync({ alter: true });
-
 export default RoomBooking;
