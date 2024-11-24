@@ -5,18 +5,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { name, NumberOfbeds, description, tags, price } = req.body;
 
-    await Room.create({
-      name,
-      NumberOfbeds,
-      description,
-      tags,
-      price,
-    });
+    if (!name || !NumberOfbeds || !price) {
+      return res.status(400).json({ error: "Chýbajú povinné údaje" });
+    }
 
-    res.status(201).end();
-  } else {
-    0;
-    res.status(405).end();
+    try {
+      const room = await Room.create({
+        name,
+        NumberOfbeds,
+        description,
+        tags,
+        price,
+      });
+      res.status(200).json({ room });
+    } catch {
+      res.status(500).json({ error: "Nepodarilo sa vytvoriť miestnosť" });
+    }
   }
 };
 

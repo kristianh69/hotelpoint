@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 
 const AddRoomForm = () => {
   const [formData, setFormData] = useState({
@@ -9,9 +8,8 @@ const AddRoomForm = () => {
     numberOfBeds: "",
     description: "",
     price: "",
-    image: null,
+    imageUrl: "",
   });
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Spracovanie zmien v textových poliach
   const handleChange = (
@@ -21,30 +19,15 @@ const AddRoomForm = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Spracovanie nahratia obrázka
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFormData((prevData) => ({ ...prevData, image: file }));
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
   // Odoslanie formulára
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null) {
-        data.append(key, value as string | Blob);
-      }
-    });
-
     try {
       const response = await fetch("api/createroom", {
         method: "POST",
-        body: data,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
       });
 
       if (response.ok) {
@@ -53,9 +36,8 @@ const AddRoomForm = () => {
           numberOfBeds: "",
           description: "",
           price: "",
-          image: null,
+          imageUrl: "",
         });
-        setImagePreview(null);
         alert("Izba bola úspešne pridaná!");
       } else {
         alert("Nepodarilo sa pridať izbu.");
@@ -115,23 +97,23 @@ const AddRoomForm = () => {
           required
         />
 
-        {/* Obrázok */}
+        {/* URL obrázka */}
         <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
+          type="text"
+          name="imageUrl"
+          value={formData.imageUrl}
+          onChange={handleChange}
+          placeholder="URL obrázka"
           className="w-full border rounded p-2"
         />
 
         {/* Náhľad obrázka */}
-        {imagePreview && (
+        {formData.imageUrl && (
           <div className="flex justify-center">
-            <Image
-              src={imagePreview}
+            <img
+              src={formData.imageUrl}
               alt="Náhľad obrázka"
               className="rounded-md max-w-full max-h-40"
-              width={160}
-              height={160}
             />
           </div>
         )}

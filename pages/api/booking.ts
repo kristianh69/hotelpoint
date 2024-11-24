@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       GuestList,
     });
 
-    booking;
+    return res.status(200).json(booking);
   }
 };
 
