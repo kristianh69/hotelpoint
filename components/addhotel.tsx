@@ -11,7 +11,8 @@ const AddRoomForm = () => {
     imageUrl: "",
   });
 
-  // Spracovanie zmien v textových poliach
+  const [errors, setErrors] = useState<string[]>([]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -19,12 +20,11 @@ const AddRoomForm = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Odoslanie formulára
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("api/createroom", {
+      const response = await fetch("/api/createroom", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -38,9 +38,15 @@ const AddRoomForm = () => {
           price: "",
           imageUrl: "",
         });
+        setErrors([]);
         alert("Izba bola úspešne pridaná!");
       } else {
-        alert("Nepodarilo sa pridať izbu.");
+        const errorData = await response.json();
+        if (errorData.errors) {
+          setErrors(errorData.errors.map((err: any) => err.message));
+        } else {
+          alert("Nepodarilo sa pridať izbu.");
+        }
       }
     } catch (error) {
       console.error("Chyba pri odosielaní formulára:", error);
@@ -56,17 +62,14 @@ const AddRoomForm = () => {
       >
         <h2 className="text-2xl font-bold text-center">Pridať izbu</h2>
 
-        {/* Názov izby */}
         <input
           name="name"
           value={formData.name}
           onChange={handleChange}
           placeholder="Názov izby"
           className="w-full border rounded p-2"
-          required
         />
 
-        {/* Počet postelí */}
         <input
           type="text"
           name="numberOfBeds"
@@ -74,10 +77,8 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Počet postelí"
           className="w-full border rounded p-2"
-          required
         />
 
-        {/* Popis izby */}
         <textarea
           name="description"
           value={formData.description}
@@ -86,7 +87,6 @@ const AddRoomForm = () => {
           className="w-full border rounded p-2"
         />
 
-        {/* Cena */}
         <input
           type="text"
           name="price"
@@ -94,10 +94,8 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Cena (€)"
           className="w-full border rounded p-2"
-          required
         />
 
-        {/* URL obrázka */}
         <input
           type="text"
           name="imageUrl"
@@ -107,7 +105,6 @@ const AddRoomForm = () => {
           className="w-full border rounded p-2"
         />
 
-        {/* Náhľad obrázka */}
         {formData.imageUrl && (
           <div className="flex justify-center">
             <img
@@ -118,7 +115,14 @@ const AddRoomForm = () => {
           </div>
         )}
 
-        {/* Tlačidlo na odoslanie */}
+        {errors.length > 0 && (
+          <div className="text-red-500 text-sm space-y-2">
+            {errors.map((error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
+
         <button
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded"

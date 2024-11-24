@@ -1,27 +1,40 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import Room from "../../database/rooms";
+import { roomSchema } from "@/schemas/auth";
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === "POST") {
-    const { name, NumberOfbeds, description, tags, price } = req.body;
-
-    if (!name || !NumberOfbeds || !price) {
-      return res.status(400).json({ error: "Chýbajú povinné údaje" });
-    }
-
-    try {
-      const room = await Room.create({
-        name,
-        NumberOfbeds,
-        description,
-        tags,
-        price,
-      });
-      res.status(200).json({ room });
-    } catch {
-      res.status(500).json({ error: "Nepodarilo sa vytvoriť miestnosť" });
-    }
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method !== "POST") {
+    res.status(404).json({ message: "Not Found" });
+    return;
   }
-};
 
-export default handler;
+  let body;
+  try {
+    body = await roomSchema.validate(req.body, {
+      strict: true,
+      abortEarly: false,
+    });
+  } catch (e: any) {
+    res.status(400).json({ message: "Invalid request body", error: e.errors });
+    return;
+  }
+
+  try {
+    const newRoom = await Room.create({
+      name: body.name,
+      numberOfBeds: body.numberOfBeds,
+      description: body.description,
+      price: body.price,
+      imageUrl: body.imageUrl,
+    });
+
+    res
+      .status(201)
+      .json({ message: "Room successfully created", room: newRoom });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}

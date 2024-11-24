@@ -1,8 +1,8 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcrypt"; // pre porovnávanie hashovaného hesla
-import User from "@/database/users"; // predpokladám, že toto je vaša databázová entita
-import { loginSchema } from "@/schemas/auth"; // Import login schémy pre validáciu
+import bcrypt from "bcrypt";
+import User from "@/database/users";
+import { loginSchema } from "@/schemas/auth";
 
 declare module "next-auth" {
   interface Session {
