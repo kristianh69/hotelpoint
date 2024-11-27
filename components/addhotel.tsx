@@ -17,7 +17,11 @@ const AddRoomForm = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const isNumber = name === "numberOfBeds" || name === "price";
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: isNumber ? Number(value) : value,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -42,8 +46,9 @@ const AddRoomForm = () => {
         alert("Izba bola úspešne pridaná!");
       } else {
         const errorData = await response.json();
+        console.log(errorData);
         if (errorData.errors) {
-          setErrors(errorData.errors.map((err: any) => err.message));
+          setErrors(errorData.errors);
         } else {
           alert("Nepodarilo sa pridať izbu.");
         }
@@ -73,7 +78,7 @@ const AddRoomForm = () => {
         <input
           type="text"
           name="numberOfBeds"
-          value={formData.numberOfBeds}
+          value={formData.numberOfBeds || ""}
           onChange={handleChange}
           placeholder="Počet postelí"
           className="w-full border rounded p-2"
@@ -90,7 +95,7 @@ const AddRoomForm = () => {
         <input
           type="text"
           name="price"
-          value={formData.price}
+          value={formData.price || ""}
           onChange={handleChange}
           placeholder="Cena (€)"
           className="w-full border rounded p-2"
@@ -117,8 +122,8 @@ const AddRoomForm = () => {
 
         {errors.length > 0 && (
           <div className="text-red-500 text-sm space-y-2">
-            {errors.map((error, index) => (
-              <p key={index}>{error}</p>
+            {errors.map((errors, index) => (
+              <p key={index}>{errors}</p>
             ))}
           </div>
         )}

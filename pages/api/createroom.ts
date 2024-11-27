@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Room from "../../database/rooms";
 import { roomSchema } from "@/schemas/auth";
+import { error } from "console";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,6 +9,7 @@ export default async function handler(
 ) {
   if (req.method !== "POST") {
     res.status(404).json({ message: "Not Found" });
+    console.log(error);
     return;
   }
 
@@ -34,7 +36,7 @@ export default async function handler(
     res
       .status(201)
       .json({ message: "Room successfully created", room: newRoom });
-  } catch (error) {
+  } catch (errors) {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
