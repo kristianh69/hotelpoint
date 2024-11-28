@@ -20,6 +20,7 @@ export const roomSchema = yup.object().shape({
     .number()
     .typeError("Počet postelí musí byť číslo")
     .required("Počet postelí je povinný"),
+  tags: yup.string().required("Popis je povinný").max(150),
   description: yup.string().required("Popis je povinný"),
   price: yup
     .number()

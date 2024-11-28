@@ -6,6 +6,7 @@ const AddRoomForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     numberOfBeds: "",
+    tags: "",
     description: "",
     price: "",
     imageUrl: "",
@@ -38,6 +39,7 @@ const AddRoomForm = () => {
         setFormData({
           name: "",
           numberOfBeds: "",
+          tags: "",
           description: "",
           price: "",
           imageUrl: "",
@@ -81,6 +83,14 @@ const AddRoomForm = () => {
           value={formData.numberOfBeds || ""}
           onChange={handleChange}
           placeholder="Počet postelí"
+          className="w-full border rounded p-2"
+        />
+
+        <input
+          name="tags"
+          value={formData.tags}
+          onChange={handleChange}
+          placeholder="Kratky Popis"
           className="w-full border rounded p-2"
         />
 

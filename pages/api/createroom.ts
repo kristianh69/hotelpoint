@@ -28,6 +28,7 @@ export default async function handler(
     const newRoom = await Room.create({
       name: body.name,
       numberOfBeds: body.numberOfBeds,
+      tags: body.tags,
       description: body.description,
       price: body.price,
       imageUrl: body.imageUrl,
