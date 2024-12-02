@@ -1,3 +1,5 @@
+"use server";
+
 import type { NextApiRequest, NextApiResponse } from "next";
 import Booking from "../../database/bookings";
 

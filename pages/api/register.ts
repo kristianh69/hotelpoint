@@ -1,3 +1,5 @@
+"use server";
+
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 import User from "../../database/users";

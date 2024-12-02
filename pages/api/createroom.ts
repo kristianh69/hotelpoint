@@ -1,3 +1,5 @@
+"use server";
+
 import { NextApiRequest, NextApiResponse } from "next";
 import Room from "../../database/rooms";
 import { roomSchema } from "@/schemas/auth";

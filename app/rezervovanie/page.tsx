@@ -30,7 +30,9 @@ export default function RoomList() {
   useEffect(() => {
     const fetchRooms = async () => {
       const response = await fetch("/api/rooms");
+      console.log(response);
       const data = await response.json();
+      console.log(data);
       setRooms(data);
     };
 
