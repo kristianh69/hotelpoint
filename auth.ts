@@ -19,6 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
+      //@ts-ignore
       authorize: async (credentials: { email: string; password: string }) => {
         try {
           // Validácia prihlasovacích údajov pomocou loginSchema
