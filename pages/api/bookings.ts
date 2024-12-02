@@ -6,8 +6,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const bookings = await Booking.findAll();
       return res.status(200).json(bookings);
-    } 
-
+    } catch {
+      console.log("jj");
+    }
+  }
 };
-
 export default handler;

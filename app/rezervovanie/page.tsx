@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Tags } from "lucide-react";
+import { DatePickerWithRange } from "@/components/ui/DatePicker";
+import Link from "next/link";
 
 // Typ pre záznam o izbe
 interface Room {
@@ -37,7 +38,7 @@ export default function RoomList() {
   }, []);
 
   return (
-    <div className="p-6 bg-black min-h-screen">
+    <div className="p-6 pt-36 bg-black min-h-screen">
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {rooms.map((room) => (
           <li
@@ -73,7 +74,7 @@ export default function RoomList() {
                     Rezervovať
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl  bg-gray-900  rounded-lg shadow-lg p-8">
+                <DialogContent className="max-w-4xl bg-gray-900 rounded-lg shadow-lg p-8">
                   <DialogHeader>
                     <DialogTitle className="text-3xl text-white font-bold">
                       {selectedRoom?.name}
@@ -95,6 +96,10 @@ export default function RoomList() {
                       </p>
                     </DialogDescription>
                   </DialogHeader>
+                  {/* Kalendár */}
+                  <div className="mt-6">
+                    <DatePickerWithRange />
+                  </div>
                   <div className="mt-6">
                     <button
                       className="w-full py-3 px-6 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors duration-200"
