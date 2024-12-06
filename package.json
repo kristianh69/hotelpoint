@@ -37,6 +37,7 @@
     "react-dom": "^18",
     "react-lottie": "^1.2.4",
     "sequelize": "^6.37.4",
+    "sonner": "^1.7.0",
     "sqlite3": "^5.1.7",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",

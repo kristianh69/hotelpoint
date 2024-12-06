@@ -7,10 +7,9 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { DatePickerWithRange } from "@/components/ui/DatePicker";
-import Link from "next/link";
+import Image from "next/image";
 
 // Typ pre záznam o izbe
 interface Room {
@@ -26,18 +25,21 @@ interface Room {
 export default function RoomList() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
+  const [numberOfNights, setNumberOfNights] = useState<number>(0);
 
   useEffect(() => {
     const fetchRooms = async () => {
       const response = await fetch("/api/rooms");
-      console.log(response);
       const data = await response.json();
-      console.log(data);
       setRooms(data);
     };
 
     fetchRooms();
   }, []);
+
+  const calculateTotalPrice = (room: Room | null): number => {
+    return room ? room.price * numberOfNights : 0;
+  };
 
   return (
     <div className="p-6 pt-36 bg-black min-h-screen">
@@ -81,32 +83,46 @@ export default function RoomList() {
                     <DialogTitle className="text-3xl text-white font-bold">
                       {selectedRoom?.name}
                     </DialogTitle>
-                    <DialogDescription>
-                      <img
-                        src={selectedRoom?.imageUrl}
-                        alt={selectedRoom?.name}
-                        className="w-full h-64 object-cover rounded-lg mt-4"
-                      />
-                      <p className="mt-6 text-lg text-white">
-                        {selectedRoom?.tags} <p>{selectedRoom?.description}</p>
-                      </p>
-                      <p className="mt-4 text-lg">
-                        Počet postelí: {selectedRoom?.numberOfBeds}
-                      </p>
-                      <p className="mt-4 text-2xl font-bold text-green-500">
-                        Cena: {selectedRoom?.price} € / noc
-                      </p>
-                    </DialogDescription>
+
+                    <img
+                      src={selectedRoom?.imageUrl || ""}
+                      alt={selectedRoom?.name || ""}
+                      className="w-full h-64 object-cover rounded-lg mt-4"
+                    />
+                    <p className="mt-6 text-lg text-white">
+                      {selectedRoom?.tags} <p>{selectedRoom?.description}</p>
+                    </p>
+                    <p className="mt-4 text-lg">
+                      Počet postelí: {selectedRoom?.numberOfBeds}
+                    </p>
+                    <p className="mt-4 text-2xl font-bold text-green-500">
+                      Cena: {selectedRoom?.price} € / noc
+                    </p>
                   </DialogHeader>
                   {/* Kalendár */}
                   <div className="mt-6">
-                    <DatePickerWithRange />
+                    <DatePickerWithRange
+                      onDateChange={(nights) => setNumberOfNights(nights)}
+                    />
                   </div>
+                  <div className="mt-4 text-xl font-bold text-white">
+                    Celková cena:{" "}
+                    <span className="text-green-500">
+                      {calculateTotalPrice(selectedRoom)} €
+                    </span>
+                  </div>
+
                   <div className="mt-6">
                     <button
                       className="w-full py-3 px-6 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors duration-200"
                       onClick={() =>
-                        alert(`Rezervované izba: ${selectedRoom?.name}`)
+                        alert(
+                          `Rezervované izba: ${
+                            selectedRoom?.name
+                          }, Celková cena: ${calculateTotalPrice(
+                            selectedRoom
+                          )} €`
+                        )
                       }
                     >
                       Potvrdiť rezerváciu

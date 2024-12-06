@@ -1,6 +1,6 @@
 import Navbar from "@/components/Navbar";
 import "./global.css";
-
+import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
 
 export const metadata = {
@@ -15,6 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <SessionProvider>
           <Navbar />
           <main>{children}</main>
+          <Toaster />
         </SessionProvider>
       </body>
     </html>
