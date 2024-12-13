@@ -1,5 +1,4 @@
 import About from "@/components/main/About";
-import Footer from "@/components/main/Footer";
 import Hero from "@/components/main/Hero";
 import { InfiniteMovingCards } from "@/components/ui/infinity-carousel";
 
@@ -10,8 +9,6 @@ const HomePage = () => {
       <InfiniteMovingCards items={Images} direction="right" speed="slow" />
       <InfiniteMovingCards items={Images} direction="left" speed="slow" />
       <About />
-
-      <Footer />
     </div>
   );
 };

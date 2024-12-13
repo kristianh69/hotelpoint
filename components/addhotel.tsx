@@ -75,6 +75,7 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Názov izby"
           className="w-full border rounded p-2"
+          required
         />
 
         <input
@@ -84,6 +85,7 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Počet postelí"
           className="w-full border rounded p-2"
+          required
         />
 
         <input
@@ -92,6 +94,7 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Kratky Popis"
           className="w-full border rounded p-2"
+          required
         />
 
         <textarea
@@ -100,6 +103,7 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Popis"
           className="w-full border rounded p-2"
+          required
         />
 
         <input
@@ -109,6 +113,7 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="Cena (€)"
           className="w-full border rounded p-2"
+          required
         />
 
         <input
@@ -118,6 +123,7 @@ const AddRoomForm = () => {
           onChange={handleChange}
           placeholder="URL obrázka"
           className="w-full border rounded p-2"
+          required
         />
 
         {formData.imageUrl && (

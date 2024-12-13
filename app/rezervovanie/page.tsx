@@ -41,6 +41,10 @@ export default function RoomList() {
     return room ? room.price * numberOfNights : 0;
   };
 
+  const resetReservation = () => {
+    setNumberOfNights(0);
+  };
+
   return (
     <div className="p-6 pt-36 bg-black min-h-screen">
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -69,7 +73,7 @@ export default function RoomList() {
               </div>
             </div>
             <div className="p-6">
-              <Dialog>
+              <Dialog onOpenChange={(open) => !open && resetReservation()}>
                 <DialogTrigger asChild>
                   <button
                     className="w-full py-2 px-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors duration-200"
@@ -80,7 +84,7 @@ export default function RoomList() {
                 </DialogTrigger>
                 <DialogContent className="max-w-4xl bg-gray-900 rounded-lg shadow-lg p-8">
                   <DialogHeader>
-                    <DialogTitle className="text-3xl text-white font-bold">
+                    <DialogTitle className="text-3xl pb-5 text-white font-bold">
                       {selectedRoom?.name}
                     </DialogTitle>
 
@@ -89,10 +93,11 @@ export default function RoomList() {
                       alt={selectedRoom?.name || ""}
                       className="w-full h-64 object-cover rounded-lg mt-4"
                     />
-                    <p className="mt-6 text-lg text-white">
-                      {selectedRoom?.tags} <p>{selectedRoom?.description}</p>
-                    </p>
-                    <p className="mt-4 text-lg">
+                    <div className="mt-6 text-lg text-white pt-5">
+                      {selectedRoom?.tags}
+                      <p className="">{selectedRoom?.description}</p>
+                    </div>
+                    <p className="mt-4 text-lg text-gray-400">
                       Počet postelí: {selectedRoom?.numberOfBeds}
                     </p>
                     <p className="mt-4 text-2xl font-bold text-green-500">
@@ -115,15 +120,16 @@ export default function RoomList() {
                   <div className="mt-6">
                     <button
                       className="w-full py-3 px-6 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors duration-200"
-                      onClick={() =>
+                      onClick={() => {
                         alert(
                           `Rezervované izba: ${
                             selectedRoom?.name
                           }, Celková cena: ${calculateTotalPrice(
                             selectedRoom
                           )} €`
-                        )
-                      }
+                        );
+                        resetReservation();
+                      }}
                     >
                       Potvrdiť rezerváciu
                     </button>
