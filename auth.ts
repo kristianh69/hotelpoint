@@ -1,67 +1,75 @@
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth, { CredentialsSignin, DefaultSession } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { loginSchema } from "./schemas/auth";
 import bcrypt from "bcrypt";
-import User from "@/database/users";
-import { loginSchema } from "@/schemas/auth";
+import { ValidationError } from "yup";
+import User from "./database/users";
+
+class InvalidLoginError extends CredentialsSignin {
+  code = "Invalid identifier or password";
+}
+
+class SomethingWentWrong extends CredentialsSignin {
+  code = " Something Went Wrong";
+}
 
 declare module "next-auth" {
+  /**
+   * Returned by `auth`, `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
   interface Session {
     user: {
-      address: string;
+      /** The user's postal address. */
+      email: string;
+      id: string;
+      role: "user" | "admin";
     } & DefaultSession["user"];
   }
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, auth } = NextAuth({
+  session: { strategy: "jwt" },
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email", type: "text" },
+        username: { label: "Username" },
         password: { label: "Password", type: "password" },
       },
-      //@ts-ignore
-      authorize: async (credentials: { email: string; password: string }) => {
+      async authorize(credentials) {
         try {
-          // Validácia prihlasovacích údajov pomocou loginSchema
-          const validatedCredentials = await loginSchema.validate(credentials, {
+          const { email, password } = loginSchema.validateSync(credentials, {
             strict: true,
-            abortEarly: false,
           });
-
-          // Načítanie používateľa podľa e-mailu
           const user = await User.findOne({
-            where: { email: validatedCredentials.email },
+            where: { email: email },
           });
-
-          if (!user) {
-            // Používateľ neexistuje
-            throw new Error("Invalid credentials.");
-          }
-
-          // Porovnanie hesla s hashom uloženým v databáze
-          const isPasswordValid = await bcrypt.compare(
-            validatedCredentials.password,
-            user.passwordHash
-          );
-
-          if (!isPasswordValid) {
-            // Ak heslo nie je platné, vrátim chybu
-            throw new Error("Invalid credentials.");
-          }
-
-          // Ak je všetko v poriadku, vráti sa používateľ
+          console.log(user);
+          if (!user || !bcrypt.compareSync(password, user.passwordHash))
+            throw new InvalidLoginError();
           return {
-            id: user.id,
             email: user.email,
-            name: user.name,
+            id: user.id,
             role: user.role,
           };
-        } catch (error: any) {
-          throw new Error(
-            error.errors ? error.errors.join(", ") : "Invalid credentials."
-          );
+        } catch (e) {
+          if (e instanceof CredentialsSignin) throw e;
+          if (e instanceof ValidationError) throw new InvalidLoginError();
+          console.log(e);
+          throw new SomethingWentWrong();
         }
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) token.id = user.id;
+      if (user) token.role = (user as any).role;
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.id = token.id as string;
+      session.user.role = token.role as "user" | "admin";
+      return session;
+    },
+  },
 });

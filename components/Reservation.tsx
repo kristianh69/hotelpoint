@@ -1,75 +1,124 @@
 "use client";
 
+import React, { useState } from "react";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  ColumnDef,
+} from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
-export default function ReservationPage() {
-  const [arrivalDate, setArrivalDate] = useState("");
-  const [departureDate, setDepartureDate] = useState("");
-  const [guests, setGuests] = useState(1);
+// Typ pre záznam tabuľky
+interface ReservationRecord {
+  id: number;
+  name: string;
+  email: string;
+  startDate: string;
+  endDate: string;
+  guests: number;
+  price: number;
+}
 
-  const handleReservation = () => {
-    alert(
-      `Rezervácia úspešná! Príchod: ${arrivalDate}, Odchod: ${departureDate}, Počet hostí: ${guests}`
-    );
+const initialData: ReservationRecord[] = [
+  {
+    id: 1,
+    name: "Ján Novák",
+    email: "jan.novak@example.com",
+    startDate: "2024-11-01",
+    endDate: "2024-11-05",
+    guests: 2,
+    price: 300,
+  },
+  {
+    id: 2,
+    name: "Mária Kováčová",
+    email: "maria.kovacova@example.com",
+    startDate: "2024-11-10",
+    endDate: "2024-11-15",
+    guests: 4,
+    price: 600,
+  },
+];
+
+export default function ReservationTable() {
+  const [data, setData] = useState<ReservationRecord[]>(initialData);
+
+  // Definícia stĺpcov
+  const columns: ColumnDef<ReservationRecord>[] = [
+    { header: "Meno", accessorKey: "name" },
+    { header: "Email", accessorKey: "email" },
+    { header: "Od kedy", accessorKey: "startDate" },
+    { header: "Do kedy", accessorKey: "endDate" },
+    { header: "Počet hostí", accessorKey: "guests" },
+    { header: "Cena", accessorKey: "price" },
+    {
+      header: "Akcie",
+      cell: ({ row }) => (
+        <Button
+          variant="destructive"
+          onClick={() => handleDelete(row.original.id)}
+        >
+          Odstrániť
+        </Button>
+      ),
+    },
+  ];
+
+  // Funkcia na odstránenie záznamu
+  const handleDelete = (id: number) => {
+    setData((prevData) => prevData.filter((record) => record.id !== id));
   };
 
+  // Inicializácia tabuľky
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-            Rezervácia izby
-          </h1>
-        </CardHeader>
-        <CardContent>
-          <label className="block mb-4">
-            <span className="text-gray-700">Dátum príchodu</span>
-            <Input
-              type="date"
-              className="mt-1 w-full"
-              value={arrivalDate}
-              onChange={(e) => setArrivalDate(e.target.value)}
-            />
-          </label>
-
-          <label className="block mb-4">
-            <span className="text-gray-700">Dátum odchodu</span>
-            <Input
-              type="date"
-              className="mt-1 w-full"
-              value={departureDate}
-              onChange={(e) => setDepartureDate(e.target.value)}
-            />
-          </label>
-
-          <label className="block mb-4">
-            <span className="text-gray-700">Počet hostí</span>
-            <Input
-              type="number"
-              className="mt-1 w-full"
-              value={guests}
-              min={1}
-              onChange={(e) => setGuests(Number(e.target.value))}
-            />
-          </label>
-        </CardContent>
-        <CardFooter>
-          <Button
-            onClick={handleReservation}
-            className="w-full bg-blue-600 hover:bg-blue-700"
-          >
-            Rezervovať
-          </Button>
-        </CardFooter>
-      </Card>
+    <div className="flex justify-center mt-32">
+      <div className="w-full max-w-4xl bg-white p-6 shadow-lg rounded-lg">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="text-center font-semibold"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id} className="text-center">
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id} className="p-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

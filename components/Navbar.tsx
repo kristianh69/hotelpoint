@@ -29,7 +29,7 @@ const Navbar = () => {
           </div>
           <div className="relative ml-auto">
             <DropdownMenu.DropdownMenu>
-              {session.status === "authenticated" && (
+              {session.data?.user.role === "admin" && (
                 <DropdownMenu.DropdownMenuTrigger className="px-3 py-2 rounded-md hover:bg-gray-700">
                   Možnosti
                 </DropdownMenu.DropdownMenuTrigger>
