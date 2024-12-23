@@ -1,5 +1,3 @@
-"use server";
-
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import User from "../../../database/users";

@@ -3,12 +3,11 @@ import sequelize from "./index";
 
 class Booking extends Model {
   declare id: number;
-  declare BookedBy: number;
+  declare BookedBy: string;
   declare CreatedAt: Date;
   declare StartingDate: Date;
   declare EndingDate: Date;
-  declare NumberOfQuest: number;
-  declare GuestList: string;
+  declare RoomId: number;
 }
 
 Booking.init(
@@ -19,13 +18,11 @@ Booking.init(
       primaryKey: true,
     },
     BookedBy: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
+      references: { model: "users", key: "id" },
     },
-    CreatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
+
     StartingDate: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -34,18 +31,13 @@ Booking.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
-    NumberOfQuest: {
+    RoomId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
-    GuestList: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      references: { model: "rooms", key: "id" },
     },
   },
-  { sequelize, timestamps: true }
+  { sequelize, timestamps: true, tableName: "bookings" }
 );
-
-Booking.sync({ alter: true });
 
 export default Booking;

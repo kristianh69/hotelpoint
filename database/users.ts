@@ -41,7 +41,7 @@ User.init(
       allowNull: false,
     },
   },
-  { sequelize, timestamps: true }
+  { sequelize, timestamps: true, tableName: "users" }
 );
 
 export default User;

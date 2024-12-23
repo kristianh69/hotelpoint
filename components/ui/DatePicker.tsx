@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 interface DatePickerWithRangeProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  onDateChange?: (numberOfNights: number) => void;
+  onDateChange?: (numberOfNights: number, fromDate: Date, toDate: Date) => void;
 }
 
 export function DatePickerWithRange({
@@ -42,7 +42,7 @@ export function DatePickerWithRange({
       }
 
       if (onDateChange) {
-        onDateChange(nights);
+        onDateChange(nights, new Date(range.from), new Date(range.to));
       }
     }
 

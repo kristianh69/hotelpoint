@@ -6,7 +6,10 @@ import React from "react";
 
 const page = async () => {
   const session = await auth();
-  if (!session?.user || session.user.role !== "admin") redirect("/login");
+  if (!session?.user) {
+    redirect("/login");
+  }
+
   return (
     <div>
       <Reservation />

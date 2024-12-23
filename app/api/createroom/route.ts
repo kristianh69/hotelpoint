@@ -1,11 +1,14 @@
-"use server";
-
+import { auth } from "@/auth";
 import Room from "../../../database/rooms";
 import { roomSchema } from "@/schemas/auth";
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
+export const POST = auth(async (req) => {
+  if (!req.auth || req.auth.user.role !== "admin") {
+    return NextResponse.json({ message: "Unauthenticated" }, { status: 401 });
+  }
+
   let body;
   try {
     body = await roomSchema.validate(await req.json(), {
@@ -30,11 +33,11 @@ export const POST = async (req: NextRequest) => {
     });
 
     return NextResponse.json(newRoom, { status: 201 });
-  } catch (errors) {
-    console.log(errors);
+  } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { message: "something  went wrong" },
+      { message: "Something went wrong" },
       { status: 500 }
     );
   }
-};
+});

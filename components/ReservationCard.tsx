@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DatePickerWithRange } from "@/components/ui/DatePicker";
-import Image from "next/image";
+import { toast } from "sonner";
 
 // Typ pre záznam o izbe
 interface Room {
@@ -26,10 +26,12 @@ export default function RoomList() {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [numberOfNights, setNumberOfNights] = useState<number>(0);
+  const [fromDate, setFromDate] = useState<Date | null>(null);
+  const [toDate, setToDate] = useState<Date | null>(null);
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const response = await fetch("/api/rooms");
+      const response = await fetch("api/rooms");
       const data = await response.json();
       setRooms(data);
     };
@@ -43,10 +45,47 @@ export default function RoomList() {
 
   const resetReservation = () => {
     setNumberOfNights(0);
+    setFromDate(null);
+    setToDate(null);
+  };
+
+  const bookRoom = async () => {
+    if (!selectedRoom) return;
+
+    const response = await fetch("/api/bookroom", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        RoomId: selectedRoom.id,
+        StartingDate: fromDate,
+        EndingDate: toDate,
+      }),
+    });
+
+    const result = await response.json();
+    if (!response.ok) {
+      toast.error(result.message);
+      return;
+    }
+
+    toast.success(
+      `Izba bola úspešne rezervovaná. Celková cena: ${calculateTotalPrice(
+        selectedRoom
+      )} €`
+    );
+    resetReservation();
   };
 
   return (
     <div className="p-6 pt-36 bg-black min-h-screen">
+      <div className=" absolute top-20 right-6">
+        <a
+          href="/mojerezervacie"
+          className="py-3 px-6 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-400 transition-colors duration-200"
+        >
+          Moje rezervovacie
+        </a>
+      </div>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {rooms.map((room) => (
           <li
@@ -107,7 +146,11 @@ export default function RoomList() {
                   {/* Kalendár */}
                   <div className="mt-6">
                     <DatePickerWithRange
-                      onDateChange={(nights) => setNumberOfNights(nights)}
+                      onDateChange={(nights, fromDate, toDate) => {
+                        setNumberOfNights(nights);
+                        setFromDate(fromDate);
+                        setToDate(toDate);
+                      }}
                     />
                   </div>
                   <div className="mt-4 text-xl font-bold text-white">
@@ -120,16 +163,7 @@ export default function RoomList() {
                   <div className="mt-6">
                     <button
                       className="w-full py-3 px-6 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors duration-200"
-                      onClick={() => {
-                        alert(
-                          `Rezervované izba: ${
-                            selectedRoom?.name
-                          }, Celková cena: ${calculateTotalPrice(
-                            selectedRoom
-                          )} €`
-                        );
-                        resetReservation();
-                      }}
+                      onClick={bookRoom}
                     >
                       Potvrdiť rezerváciu
                     </button>

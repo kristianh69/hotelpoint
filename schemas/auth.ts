@@ -31,3 +31,21 @@ export const roomSchema = yup.object().shape({
     .url("Neplatná URL adresa")
     .required("URL obrázka je povinná"),
 });
+
+export const bookingSchema = yup.object().shape({
+  RoomId: yup.number().required(),
+  StartingDate: yup
+    .string()
+    .datetime()
+    .transform((value) => {
+      return new Date(value);
+    })
+    .required(),
+  EndingDate: yup
+    .string()
+    .datetime()
+    .transform((value) => {
+      return new Date(value);
+    })
+    .required(),
+});
