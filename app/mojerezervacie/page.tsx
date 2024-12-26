@@ -2,48 +2,48 @@
 
 import React, { useEffect, useState } from "react";
 
-interface Rezervacia {
+interface Booking {
   id: number;
   roomName: string;
-  StartingDate: string;
-  EndingDate: string;
+  startingDate: string;
+  endingDate: string;
   price: number;
 }
 
-const MojeRezervacie: React.FC = () => {
-  const [rezervacie, setRezervacie] = useState<Rezervacia[]>([]);
+const MyBookings: React.FC = () => {
+  const [bookings, setBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
-    const fetchRezervacie = async () => {
+    const fetchBookings = async () => {
       try {
-        const response = await fetch("/api/bookings");
+        const response = await fetch("/api/userbookings");
         if (response.ok) {
           const data = await response.json();
-          setRezervacie(data);
+          setBookings(data);
         }
       } catch {}
     };
 
-    fetchRezervacie();
+    fetchBookings();
   }, []);
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6 pt-32">
-      {rezervacie.length > 0 ? (
+      {bookings.length > 0 ? (
         <ul className="space-y-6">
-          {rezervacie.map((rezervacia) => (
+          {bookings.map((booking) => (
             <li
-              key={rezervacia.id}
+              key={booking.id}
               className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700"
             >
               <h2 className="text-2xl font-semibold">
-                {rezervacia.roomName || "Názov izby"}
+                {booking.roomName || "Názov izby"}
               </h2>
               <p className="mt-2 text-gray-400">
-                Dátum: {rezervacia.StartingDate} - {rezervacia.EndingDate}
+                Dátum: {booking.startingDate} - {booking.endingDate}
               </p>
               <p className="mt-2 text-green-400 font-bold">
-                Cena: {rezervacia.price} €
+                Cena: {booking.price} €
               </p>
               <button className="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
                 Odstrániť
@@ -56,4 +56,4 @@ const MojeRezervacie: React.FC = () => {
   );
 };
 
-export default MojeRezervacie;
+export default MyBookings;
