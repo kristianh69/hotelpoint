@@ -12,6 +12,8 @@ interface Booking {
 
 const MyBookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -20,8 +22,14 @@ const MyBookings: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setBookings(data);
+        } else {
+          setError("Nezískali sme žiadne rezervácie.");
         }
-      } catch {}
+      } catch (err) {
+        setError("Došlo k chybe pri načítavaní rezervácií.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchBookings();
@@ -29,7 +37,11 @@ const MyBookings: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6 pt-32">
-      {bookings.length > 0 ? (
+      {loading ? (
+        <p className="text-center text-gray-400">Načítavam rezervácie...</p>
+      ) : error ? (
+        <p className="text-center text-red-600">{error}</p>
+      ) : bookings.length > 0 ? (
         <ul className="space-y-6">
           {bookings.map((booking) => (
             <li
@@ -51,7 +63,11 @@ const MyBookings: React.FC = () => {
             </li>
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <p className="text-center text-gray-400">
+          Žiadne rezervácie nenájdené.
+        </p>
+      )}
     </div>
   );
 };
