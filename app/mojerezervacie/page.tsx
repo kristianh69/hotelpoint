@@ -3,14 +3,14 @@
 import React, { useEffect, useState } from "react";
 
 interface Booking {
-  id: number;
+  id: string; // ID ako string
   roomName: string;
   startingDate: string;
   endingDate: string;
   price: number;
 }
 
-const MyBookings: React.FC = () => {
+const MyBookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -35,6 +35,28 @@ const MyBookings: React.FC = () => {
     fetchBookings();
   }, []);
 
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch("/api/deletebooking", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        setBookings((prev) => prev.filter((booking) => booking.id !== id));
+      } else {
+        const data = await response.json();
+        alert(data.message || "Nepodarilo sa odstrániť rezerváciu.");
+      }
+    } catch (error) {
+      console.error("Chyba pri odstraňovaní rezervácie:", error);
+      alert("Došlo k chybe pri odstraňovaní rezervácie.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6 pt-32">
       {loading ? (
@@ -57,7 +79,10 @@ const MyBookings: React.FC = () => {
               <p className="mt-2 text-green-400 font-bold">
                 Cena: {booking.price} €
               </p>
-              <button className="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">
+              <button
+                onClick={() => handleDelete(booking.id)}
+                className="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
+              >
                 Odstrániť
               </button>
             </li>
