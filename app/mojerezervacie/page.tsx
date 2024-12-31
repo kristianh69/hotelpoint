@@ -4,15 +4,14 @@ import React, { useEffect, useState } from "react";
 
 interface Booking {
   id: string; // ID ako string
-  roomName: string;
+  name: string;
   startingDate: string;
   endingDate: string;
   price: number;
 }
 
-const MyBookings = () => {
+const MyBooking = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -27,8 +26,6 @@ const MyBookings = () => {
         }
       } catch (err) {
         setError("Došlo k chybe pri načítavaní rezervácií.");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -59,9 +56,7 @@ const MyBookings = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6 pt-32">
-      {loading ? (
-        <p className="text-center text-gray-400">Načítavam rezervácie...</p>
-      ) : error ? (
+      {error ? (
         <p className="text-center text-red-600">{error}</p>
       ) : bookings.length > 0 ? (
         <ul className="space-y-6">
@@ -70,9 +65,7 @@ const MyBookings = () => {
               key={booking.id}
               className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700"
             >
-              <h2 className="text-2xl font-semibold">
-                {booking.roomName || "Názov izby"}
-              </h2>
+              <h2 className="text-2xl font-semibold">{booking.name}</h2>
               <p className="mt-2 text-gray-400">
                 Dátum: {booking.startingDate} - {booking.endingDate}
               </p>
@@ -97,4 +90,4 @@ const MyBookings = () => {
   );
 };
 
-export default MyBookings;
+export default MyBooking;
