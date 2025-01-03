@@ -1,10 +1,27 @@
-import { Sequelize } from "sequelize";
-import sqlite3 from "sqlite3";
+import Room from "./rooms";
+import User from "./users";
+import Booking from "./bookings";
 
-const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "data.sql",
-  dialectModule: sqlite3,
+Booking.belongsTo(User, {
+  onDelete: "CASCADE",
+  as: "User",
+  foreignKey: "BookedBy",
+});
+User.hasMany(Booking, {
+  onDelete: "CASCADE",
+  as: "Bookings",
+  foreignKey: "BookedBy",
 });
 
-export default sequelize;
+Booking.belongsTo(Room, {
+  onDelete: "CASCADE",
+  as: "Room",
+  foreignKey: "RoomId",
+});
+Room.hasMany(Booking, {
+  onDelete: "CASCADE",
+  as: "Bookings",
+  foreignKey: "RoomId",
+});
+
+export { Room, User, Booking };

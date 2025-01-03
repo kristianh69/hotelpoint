@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
-import Room from "../../../database/rooms";
-import Booking from "../../../database/bookings";
+import { Room } from "@/database";
+import { Booking } from "@/database";
 import { bookingSchema } from "../../../schemas/auth";
 import { NextResponse } from "next/server";
 import { Op } from "sequelize"; // Import Op z Sequelize

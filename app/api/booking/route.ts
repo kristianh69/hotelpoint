@@ -1,5 +1,5 @@
 "use server";
-import Booking from "../../../database/bookings";
+import { Booking } from "@/database";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {

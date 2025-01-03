@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize";
-import sequelize from "./index";
+import sequelize from "./sequelize";
 
 class Room extends Model {
   declare id: number;

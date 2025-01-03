@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import Reservation from "@/components/Reservation";
+import Reservation from "@/components/Bookings";
 import { redirect } from "next/navigation";
 
 import React from "react";

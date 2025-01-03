@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import User from "../../../database/users";
+import { User } from "@/database";
 import { registerSchema } from "@/schemas/auth";
 
 export const POST = async (req: NextRequest) => {

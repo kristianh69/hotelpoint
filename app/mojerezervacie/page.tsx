@@ -20,6 +20,7 @@ const MyBooking = () => {
         const response = await fetch("/api/userbookings");
         if (response.ok) {
           const data = await response.json();
+          console.log("kk", data);
           setBookings(data);
         } else {
           setError("Nezískali sme žiadne rezervácie.");

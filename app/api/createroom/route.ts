@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import Room from "../../../database/rooms";
+import { Room } from "@/database";
 import { roomSchema } from "@/schemas/auth";
 
 import { NextResponse } from "next/server";

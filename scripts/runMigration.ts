@@ -1,6 +1,6 @@
-import Booking from "../database/bookings";
-import Room from "../database/rooms";
-import User from "../database/users";
+import { Booking } from "../database";
+import { Room } from "../database";
+import { User } from "../database";
 
 const runMigration = async () => {
   await User.sync({ force: true });

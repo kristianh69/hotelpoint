@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import Booking from "../../../database/bookings";
+import { Booking } from "@/database";
 import { NextResponse } from "next/server";
 
 export const DELETE = auth(async (req) => {

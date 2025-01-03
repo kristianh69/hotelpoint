@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "./schemas/auth";
 import bcrypt from "bcrypt";
 import { ValidationError } from "yup";
-import User from "./database/users";
+import { User } from "@/database";
 
 class InvalidLoginError extends CredentialsSignin {
   code = "Invalid identifier or password";
