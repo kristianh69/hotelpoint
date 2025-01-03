@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
 export const registerSchema = yup.object({
-  name: yup.string().required("Meno je povinné"), // Povinné pole
-  surname: yup.string().optional(), // Voliteľné pole
+  name: yup.string().required("Meno je povinné"),
+  surname: yup.string().optional(),
   email: yup.string().email("Neplatný email").required("Email je povinný"),
   password: yup
     .string()
@@ -48,4 +48,7 @@ export const bookingSchema = yup.object().shape({
       return new Date(value);
     })
     .required(),
+});
+export const deleteBooking = yup.object().shape({
+  id: yup.string().required(),
 });

@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
-import Reservation from "@/components/Bookings";
+import Bookings from "@/components/Bookings";
+
 import { redirect } from "next/navigation";
 
 import React from "react";
@@ -12,7 +13,7 @@ const page = async () => {
 
   return (
     <div>
-      <Reservation />
+      <Bookings />
     </div>
   );
 };

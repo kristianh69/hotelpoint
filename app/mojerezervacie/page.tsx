@@ -2,12 +2,21 @@
 
 import React, { useEffect, useState } from "react";
 
-interface Booking {
-  id: string; // ID ako string
+interface Room {
+  id: number;
   name: string;
-  startingDate: string;
-  endingDate: string;
+  tags: string;
+  description: string;
+  numberOfBeds: number;
   price: number;
+  imageUrl: string;
+}
+
+interface Booking {
+  id: number; // ID ako číslo
+  Room: Room;
+  StartingDate: string;
+  EndingDate: string;
 }
 
 const MyBooking = () => {
@@ -17,13 +26,19 @@ const MyBooking = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch("/api/userbookings");
+        const response = await fetch("/api/booking", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
         if (response.ok) {
           const data = await response.json();
-          console.log("kk", data);
           setBookings(data);
         } else {
-          setError("Nezískali sme žiadne rezervácie.");
+          const data = await response.json();
+          setError(data.message || "Nezískali sme žiadne rezervácie.");
         }
       } catch (err) {
         setError("Došlo k chybe pri načítavaní rezervácií.");
@@ -33,9 +48,11 @@ const MyBooking = () => {
     fetchBookings();
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
     try {
-      const response = await fetch("/api/deletebooking", {
+      if (!confirm("Naozaj chcete zmazať rezerváciu?")) return;
+
+      const response = await fetch("/api/booking", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -66,12 +83,13 @@ const MyBooking = () => {
               key={booking.id}
               className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700"
             >
-              <h2 className="text-2xl font-semibold">{booking.name}</h2>
+              <h2 className="text-2xl font-semibold">{booking.Room.name}</h2>
               <p className="mt-2 text-gray-400">
-                Dátum: {booking.startingDate} - {booking.endingDate}
+                Dátum: {booking.StartingDate.split("T")[0]} -{" "}
+                {booking.EndingDate.split("T")[0]}
               </p>
               <p className="mt-2 text-green-400 font-bold">
-                Cena: {booking.price} €
+                Cena: {booking.Room.price} €
               </p>
               <button
                 onClick={() => handleDelete(booking.id)}

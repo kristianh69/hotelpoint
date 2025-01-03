@@ -2,14 +2,29 @@
 
 import React, { useEffect, useState } from "react";
 
-interface Booking {
+interface Room {
   id: number;
   name: string;
-  email: string;
-  startDate: string;
-  endDate: string;
-  guests: number;
+  tags: string;
+  description: string;
+  numberOfBeds: number;
   price: number;
+  imageUrl: string;
+}
+
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  surname: string;
+}
+
+interface Booking {
+  id: string; // ID ako string
+  Room: Room;
+  StartingDate: string;
+  EndingDate: string;
+  User: User;
 }
 
 export default function ReservationTable() {
@@ -20,7 +35,7 @@ export default function ReservationTable() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch("/api/admin/bookings");
+        const response = await fetch("/api/admin");
         if (response.ok) {
           const bookings = await response.json();
           setData(bookings);
@@ -37,8 +52,29 @@ export default function ReservationTable() {
     fetchBookings();
   }, []);
 
-  const handleDelete = (id: number) => {
-    setData((prevData) => prevData.filter((record) => record.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm("Naozaj chcete zmazať rezerváciu?")) return;
+
+    try {
+      const response = await fetch(`/api/booking`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        setData((prevData) => prevData.filter((record) => record.id !== id));
+        alert("Rezervácia bola úspešne odstránená.");
+      } else {
+        const data = await response.json();
+        alert(data.message || "Nepodarilo sa odstrániť rezerváciu.");
+      }
+    } catch (error) {
+      console.error("Chyba pri odstraňovaní rezervácie:", error);
+      alert("Došlo k chybe pri odstraňovaní rezervácie.");
+    }
   };
 
   return (
@@ -56,7 +92,7 @@ export default function ReservationTable() {
                 <th className="px-4 py-2 text-left">Email</th>
                 <th className="px-4 py-2 text-left">Od kedy</th>
                 <th className="px-4 py-2 text-left">Do kedy</th>
-                <th className="px-4 py-2 text-left">Počet hostí</th>
+                <th className="px-4 py-2 text-left">Meno</th>
                 <th className="px-4 py-2 text-left">Cena</th>
                 <th className="px-4 py-2 text-left">Akcie</th>
               </tr>
@@ -64,12 +100,18 @@ export default function ReservationTable() {
             <tbody>
               {data.map((booking) => (
                 <tr key={booking.id} className="text-center border-t">
-                  <td className="px-4 py-2">{booking.name}</td>
-                  <td className="px-4 py-2">{booking.email}</td>
-                  <td className="px-4 py-2">{booking.startDate}</td>
-                  <td className="px-4 py-2">{booking.endDate}</td>
-                  <td className="px-4 py-2">{booking.guests}</td>
-                  <td className="px-4 py-2">{booking.price}</td>
+                  <td className="px-4 py-2">{booking.Room.name}</td>
+                  <td className="px-4 py-2">{booking.User.email}</td>
+                  <td className="px-4 py-2">
+                    {booking.StartingDate.split("T")[0]}
+                  </td>
+                  <td className="px-4 py-2">
+                    {booking.EndingDate.split("T")[0]}
+                  </td>
+                  <td className="px-4 py-2">
+                    {booking.User.name} {booking.User.surname}
+                  </td>
+                  <td className="px-4 py-2">{booking.Room.price}</td>
                   <td className="px-4 py-2">
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded"
