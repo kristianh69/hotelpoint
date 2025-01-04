@@ -79,8 +79,13 @@ export default function RoomList() {
 
   const deactivateRoom = async (roomId: number) => {
     try {
+      const confirmDeactivation = window.confirm(
+        "Naozaj chcete deaktivovať túto izbu?"
+      );
+      if (!confirmDeactivation) return;
+
       const response = await fetch(`/api/admin/deleteroom`, {
-        method: "PUT",
+        method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: roomId }),
       });

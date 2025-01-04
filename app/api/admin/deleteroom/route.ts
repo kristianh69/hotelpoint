@@ -3,7 +3,7 @@ import { Room } from "@/database";
 import { deleteBooking } from "@/schemas/auth";
 import { NextResponse } from "next/server";
 
-export const PUT = auth(async (req) => {
+export const DELETE = auth(async (req) => {
   if (!req.auth || req.auth.user.role !== "admin") {
     return NextResponse.json({ message: "Unauthenticated" }, { status: 401 });
   }
@@ -19,7 +19,7 @@ export const PUT = auth(async (req) => {
       );
     }
 
-    room.active = true;
+    room.active = false;
     await room.save();
 
     return NextResponse.json(

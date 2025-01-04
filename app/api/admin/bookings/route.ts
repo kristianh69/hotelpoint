@@ -19,7 +19,6 @@ export const GET = auth(async (req) => {
         },
       ],
     });
-    console.log("AA BB", bookings);
 
     return NextResponse.json(bookings, { status: 200 });
   } catch (error) {
