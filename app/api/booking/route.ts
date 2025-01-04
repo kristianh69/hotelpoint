@@ -88,7 +88,7 @@ export const DELETE = auth(async (req) => {
   }
 
   try {
-    const id = await deleteBooking.validate(await req.json());
+    const { id } = await deleteBooking.validate(await req.json());
 
     let query: any = { id };
     if (req.auth.user.role !== "admin") {

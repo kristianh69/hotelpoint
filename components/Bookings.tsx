@@ -35,7 +35,7 @@ export default function ReservationTable() {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await fetch("/api/admin");
+        const response = await fetch("/api/admin/bookings");
         if (response.ok) {
           const bookings = await response.json();
           setData(bookings);

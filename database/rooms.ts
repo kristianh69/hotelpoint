@@ -8,7 +8,8 @@ class Room extends Model {
   declare description?: string;
   declare tags?: string;
   declare price: number;
-  declare imageUrl?: string; // New attribute for the image URL
+  declare imageUrl?: string;
+  declare active: boolean;
 }
 
 Room.init(
@@ -40,7 +41,12 @@ Room.init(
     },
     imageUrl: {
       type: DataTypes.STRING,
-      allowNull: true, // Set to true if the image URL is optional
+      allowNull: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   {

@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { DatePickerWithRange } from "@/components/ui/DatePicker";
 import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
-// Typ pre záznam o izbe
 interface Room {
   id: number;
   name: string;
@@ -28,6 +28,7 @@ export default function RoomList() {
   const [numberOfNights, setNumberOfNights] = useState<number>(0);
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
+  const session = useSession();
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -76,6 +77,31 @@ export default function RoomList() {
     resetReservation();
   };
 
+  const deactivateRoom = async (roomId: number) => {
+    try {
+      const response = await fetch(`/api/admin/deleteroom`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: roomId }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.error);
+        return;
+      }
+
+      toast.success(result.message);
+      setRooms((prevRooms) =>
+        prevRooms.map((room) =>
+          room.id === roomId ? { ...room, active: true } : room
+        )
+      );
+    } catch (error) {
+      toast.error("Nepodarilo sa deaktivovať izbu");
+    }
+  };
+
   return (
     <div className="p-6 pt-36 bg-black min-h-screen">
       <div className=" absolute top-20 right-6">
@@ -112,6 +138,14 @@ export default function RoomList() {
               </div>
             </div>
             <div className="p-6">
+              {session.data?.user.role === "admin" && (
+                <button
+                  className="w-full py-2 px-4 bg-red-500 text-white font-medium rounded-lg hover:bg-green-400 transition-colors duration-200 mb-2"
+                  onClick={() => deactivateRoom(room.id)}
+                >
+                  deaktivovať izbu
+                </button>
+              )}
               <Dialog onOpenChange={(open) => !open && resetReservation()}>
                 <DialogTrigger asChild>
                   <button
