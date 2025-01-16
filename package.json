@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "migrate": "ts-node scripts/runMigration.ts",
-    "addAdmin": "ts-node scripts/addAdmin.ts",
+    "migrate": "node -r ts-node/register --env-file=.env.local scripts/runMigration.ts",
+    "addAdmin": "node -r ts-node/register --env-file=.env.local scripts/addAdmin.ts",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

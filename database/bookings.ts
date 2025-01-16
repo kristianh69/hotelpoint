@@ -19,7 +19,7 @@ Booking.init(
       primaryKey: true,
     },
     BookedBy: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
       allowNull: false,
       references: { model: "users", key: "id" },
     },
