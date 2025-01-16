@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { addDays, format } from "date-fns";
+import { format, addDays, differenceInDays } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
@@ -13,39 +13,39 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { toast } from "sonner";
 
-interface DatePickerWithRangeProps {
-  className?: string;
-  onDateChange: (
-    nights: number,
-    fromDate: Date | null,
-    toDate: Date | null
-  ) => void;
+interface DatePickerWithRangeProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  onDateChange?: (numberOfNights: number, fromDate: Date, toDate: Date) => void;
 }
 
 export function DatePickerWithRange({
   className,
   onDateChange,
 }: DatePickerWithRangeProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  });
+  const [date, setDate] = React.useState<DateRange | undefined>();
+  const [error, setError] = React.useState<string | null>(null);
 
-  React.useEffect(() => {
-    if (date?.from && date.to) {
-      const nights =
-        (date.to.getTime() - date.from.getTime()) / (1000 * 3600 * 24);
+  const MAX_NIGHTS = 21;
 
-      if (nights > 21) {
-        alert("Maximálny počet nocí je 21.");
-        setDate({ from: date.from, to: addDays(date.from, 21) });
+  const handleDateChange = (range: DateRange | undefined) => {
+    if (range?.from && range?.to) {
+      const nights = differenceInDays(range.to, range.from);
+
+      if (nights > MAX_NIGHTS) {
         return;
+      } else {
+        setError(null);
       }
 
-      onDateChange(nights, date.from, date.to);
+      if (onDateChange) {
+        onDateChange(nights, new Date(range.from), new Date(range.to));
+      }
     }
-  }, [date, onDateChange]);
+
+    setDate(range);
+  };
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -55,7 +55,7 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-full sm:w-[300px] justify-start text-left font-normal", // Zabezpečí plnú šírku na mobiloch
               !date && "text-muted-foreground"
             )}
           >
@@ -70,21 +70,34 @@ export function DatePickerWithRange({
                 format(date.from, "LLL dd, y")
               )
             ) : (
-              <span>Vyberte dátum</span>
+              <span>Pick a date</span>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={date?.from}
-            selected={date}
-            onSelect={setDate}
-            numberOfMonths={2}
-          />
+          <div className="overflow-hidden">
+            <Calendar
+              initialFocus
+              mode="range"
+              selected={date}
+              onSelect={(range) => {
+                // Obmedzenie výberu maximálne na 21 nocí
+                if (range?.from && range?.to) {
+                  const maxToDate = addDays(range.from, MAX_NIGHTS);
+                  if (range.to > maxToDate) {
+                    range.to = maxToDate;
+                    toast.warning(`Maximálny počet nocí je ${MAX_NIGHTS}`);
+                    // Automaticky obmedzíme koncový dátum
+                  }
+                }
+                handleDateChange(range);
+              }}
+              numberOfMonths={2}
+            />
+          </div>
         </PopoverContent>
       </Popover>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 }

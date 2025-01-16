@@ -148,11 +148,7 @@ export default function RoomList() {
                   deaktivovať izbu
                 </button>
               )}
-              <Dialog
-                onOpenChange={(open) => {
-                  if (!open) resetReservation();
-                }}
-              >
+              <Dialog onOpenChange={(open) => !open && resetReservation()}>
                 <DialogTrigger asChild>
                   <button
                     className="w-full py-2 px-4 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors duration-200"
@@ -161,7 +157,7 @@ export default function RoomList() {
                     Rezervovať
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl bg-gray-900 rounded-lg shadow-lg p-8 overflow-y-auto h-[700px]">
+                <DialogContent className="max-w-4xl   bg-gray-900 rounded-lg shadow-lg p-8 overflow-y-auto h-[700px]">
                   <DialogHeader>
                     <DialogTitle className="text-3xl pb-5 text-white font-bold">
                       {selectedRoom?.name}
