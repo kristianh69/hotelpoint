@@ -32,7 +32,7 @@ export const POST = auth(async (req) => {
       );
     }
 
-    const overlappingBookings = await Booking.findAll({
+    const overlappingBookings = (await Booking.findAll({
       where: {
         [Op.and]: [
           { RoomId: body.RoomId },
@@ -52,7 +52,7 @@ export const POST = auth(async (req) => {
           },
         ],
       },
-    });
+    })) as any;
 
     if (overlappingBookings.length > 0) {
       return NextResponse.json(
@@ -72,7 +72,7 @@ export const POST = auth(async (req) => {
     return NextResponse.json(
       { message: "Booking successfully created.", booking: newBooking },
       { status: 201 }
-    );
+    ) as any;
   } catch (error) {
     console.error("Error creating booking:", error);
     return NextResponse.json(
@@ -80,7 +80,7 @@ export const POST = auth(async (req) => {
       { status: 500 }
     );
   }
-});
+}) as any;
 
 export const DELETE = auth(async (req) => {
   if (!req.auth) {
@@ -143,4 +143,4 @@ export const GET = auth(async (req) => {
     console.log(error);
     return NextResponse.json({ message: "chyba" }, { status: 500 });
   }
-});
+}) as any;
