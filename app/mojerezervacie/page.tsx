@@ -2,22 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-interface Room {
-  id: number;
-  name: string;
-  tags: string;
-  description: string;
-  numberOfBeds: number;
-  price: number;
-  imageUrl: string;
-}
-
-interface Booking {
-  id: number; // ID ako číslo
-  Room: Room;
-  StartingDate: string;
-  EndingDate: string;
-}
+import { Booking } from "../../interfaces";
 
 const MyBooking = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);

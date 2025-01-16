@@ -11,16 +11,7 @@ import {
 import { DatePickerWithRange } from "@/components/ui/DatePicker";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
-
-interface Room {
-  id: number;
-  name: string;
-  tags: string;
-  description: string;
-  numberOfBeds: number;
-  price: number;
-  imageUrl: string;
-}
+import { Room } from "@/interfaces";
 
 export default function RoomList() {
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -52,29 +43,35 @@ export default function RoomList() {
 
   const bookRoom = async () => {
     if (!selectedRoom) return;
+    try {
+      const confirmBook = window.confirm("Podvtdte rezervaciu?");
+      if (!confirmBook) return;
 
-    const response = await fetch("/api/booking", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        RoomId: selectedRoom.id,
-        StartingDate: fromDate,
-        EndingDate: toDate,
-      }),
-    });
+      const response = await fetch("/api/booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          RoomId: selectedRoom.id,
+          StartingDate: fromDate,
+          EndingDate: toDate,
+        }),
+      });
 
-    const result = await response.json();
-    if (!response.ok) {
-      toast.error(result.message);
-      return;
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.message);
+        return;
+      }
+
+      toast.success(
+        `Izba bola úspešne rezervovaná. Celková cena: ${calculateTotalPrice(
+          selectedRoom
+        )} €`
+      );
+      resetReservation();
+    } catch (error) {
+      toast.error("Chyba pri rezervovaní izby.");
     }
-
-    toast.success(
-      `Izba bola úspešne rezervovaná. Celková cena: ${calculateTotalPrice(
-        selectedRoom
-      )} €`
-    );
-    resetReservation();
   };
 
   const deactivateRoom = async (roomId: number) => {
@@ -165,7 +162,6 @@ export default function RoomList() {
                     <DialogTitle className="text-3xl pb-5 text-white font-bold">
                       {selectedRoom?.name}
                     </DialogTitle>
-
                     <img
                       src={selectedRoom?.imageUrl || ""}
                       alt={selectedRoom?.name || ""}

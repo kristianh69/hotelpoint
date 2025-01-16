@@ -13,12 +13,16 @@ export const POST = async (req: NextRequest) => {
       abortEarly: false,
     });
   } catch (e: any) {
-    return NextResponse.json(e.errors, { status: 400 });
+    const errorMessages = e.inner.map((error: any) => error.message);
+    return NextResponse.json({ errors: errorMessages }, { status: 400 });
   }
 
   const existingUser = await User.findOne({ where: { email: body.email } });
   if (existingUser) {
-    return NextResponse.json(null, { status: 400 });
+    return NextResponse.json(
+      { message: "Tento e-mail už existuje." },
+      { status: 400 }
+    );
   }
 
   const hashedPassword = bcrypt.hashSync(body.password, 10);

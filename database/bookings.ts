@@ -8,6 +8,7 @@ class Booking extends Model {
   declare StartingDate: Date;
   declare EndingDate: Date;
   declare RoomId: number;
+  declare Confirmed: boolean;
 }
 
 Booking.init(
@@ -35,6 +36,11 @@ Booking.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: { model: "rooms", key: "id" },
+    },
+    Confirmed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
   },
   { sequelize, timestamps: true, tableName: "bookings" }

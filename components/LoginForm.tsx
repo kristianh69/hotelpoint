@@ -29,7 +29,6 @@ const LoginForm: React.FC = () => {
     } else {
       setError("");
       console.log("User successfully logged in");
-      // Prípadne môžeš presmerovať používateľa na inú stránku
     }
   };
 

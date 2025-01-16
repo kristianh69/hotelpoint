@@ -7,17 +7,19 @@ const RegisterForm: React.FC = () => {
   const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !surname || !email || !password) {
-      setError("Prosím vyplňte všetky polia");
+
+    setErrors([]);
+
+    if (!name || !email || !password) {
+      setErrors((prevErrors) => [...prevErrors, "Prosím vyplňte všetky polia"]);
       return;
     }
 
-    setError("");
     setLoading(true);
 
     try {
@@ -37,14 +39,18 @@ const RegisterForm: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || "Niečo sa pokazilo pri registrácii.");
+        if (data.message) {
+          setErrors((prevErrors) => [...prevErrors, data.message]);
+        } else if (data.errors) {
+          setErrors(data.errors);
+        }
         return;
       }
 
       console.log("Úspešne zaregistrovaný:", data);
-      window.location.href = "/login"; // Redirect to login page
+      window.location.href = "/login";
     } catch (error) {
-      setError("Chyba pri registrácii. Skúste to neskôr.");
+      setErrors(["Chyba pri registrácii. Skúste to neskôr."]);
       console.log(error);
     } finally {
       setLoading(false);
@@ -58,9 +64,19 @@ const RegisterForm: React.FC = () => {
         onSubmit={handleSubmit}
       >
         <h2 className="mb-4 text-lg font-bold">Registrácia</h2>
-        {error && <p className="mb-4 text-red-500">{error}</p>}
+
+        {errors.length > 0 && (
+          <div className="mb-4 text-red-500">
+            <ul>
+              {errors.map((error, index) => (
+                <li key={index}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="mb-4">
-          <label className="block text-gray-700">Meno:</label>
+          <label className="block text-gray-700">* Meno:</label>
           <input
             type="text"
             value={name}
@@ -76,11 +92,10 @@ const RegisterForm: React.FC = () => {
             value={surname}
             onChange={(e) => setSurname(e.target.value)}
             className="mt-1 p-2 border border-gray-300 rounded w-full"
-            required
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Email:</label>
+          <label className="block text-gray-700">* Email:</label>
           <input
             type="email"
             value={email}
@@ -90,7 +105,7 @@ const RegisterForm: React.FC = () => {
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Heslo:</label>
+          <label className="block text-gray-700">* Heslo:</label>
           <input
             type="password"
             value={password}
@@ -101,7 +116,7 @@ const RegisterForm: React.FC = () => {
         </div>
 
         <p className="mb-4 text-blue-600 underline">
-          <a href="/login"> Prihlásiť sa </a>
+          <a href="/login">Prihlásiť sa</a>
         </p>
         <button
           type="submit"

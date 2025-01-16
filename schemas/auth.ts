@@ -3,10 +3,18 @@ import * as yup from "yup";
 export const registerSchema = yup.object({
   name: yup.string().required("Meno je povinné"),
   surname: yup.string().optional(),
-  email: yup.string().email("Neplatný email").required("Email je povinný"),
+  email: yup
+    .string()
+    .email("Zadaný e-mail nie je platný")
+    .required("E-mail je povinný"),
+
   password: yup
     .string()
-    .min(6, "Heslo musí mať aspoň 6 znakov")
+    .min(8, "Heslo musí mať aspoň 8 znakov")
+    .matches(/[A-Z]/, "Heslo musí obsahovať aspoň jedno veľké písmeno")
+
+    .matches(/[0-9]/, "Heslo musí obsahovať aspoň jednu číslicu")
+
     .required("Heslo je povinné"),
 });
 
