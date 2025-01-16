@@ -32,7 +32,7 @@ export const POST = auth(async (req) => {
       );
     }
 
-    const overlappingBookings = (await Booking.findAll({
+    const overlappingBookings = await Booking.findAll({
       where: {
         [Op.and]: [
           { RoomId: body.RoomId },
@@ -52,7 +52,7 @@ export const POST = auth(async (req) => {
           },
         ],
       },
-    })) as any;
+    });
 
     if (overlappingBookings.length > 0) {
       return NextResponse.json(
@@ -117,7 +117,7 @@ export const DELETE = auth(async (req) => {
       { status: 500 }
     );
   }
-});
+}) as any;
 export const GET = auth(async (req) => {
   if (!req.auth) {
     return NextResponse.json({ message: "Unauthenticated" }, { status: 401 });
