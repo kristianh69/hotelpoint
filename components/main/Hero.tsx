@@ -15,8 +15,8 @@ const Hero = () => {
         />
       </div>
       <div className="text-center ">
-        <h1 className="text-3xl relative z-10 md:text-4xl lg:text-5xl font-bold text-white px-10">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <h1 className="text-2xl relative z-10 lg:text-5xl font-bold text-white px-10">
+          Rezervujte si izbu rýchlo a jednoducho presne podľa vašich predstáv.
         </h1>
       </div>
     </div>

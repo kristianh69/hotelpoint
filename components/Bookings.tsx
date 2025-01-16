@@ -54,53 +54,71 @@ export default function ReservationTable() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex-grow">
-        {" "}
-        <div className="flex justify-center mt-32">
-          <div className="w-full max-w-4xl bg-white p-6 shadow-lg rounded-lg">
-            {loading ? (
-              <p className="text-center text-gray-500">
-                Načítavam rezervácie...
-              </p>
-            ) : error ? (
-              <p className="text-center text-red-600">{error}</p>
-            ) : (
-              <table className="min-w-full table-auto">
+    <div className="flex flex-col min-h-screen ">
+      <div className="flex justify-center mt-16 px-4">
+        <div className="w-full max-w-6xl bg-white p-6 shadow-lg rounded-lg">
+          {loading ? (
+            <p className="text-center text-gray-500">Načítavam rezervácie...</p>
+          ) : error ? (
+            <p className="text-center text-red-600">{error}</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full table-auto border-collapse">
                 <thead>
                   <tr>
-                    <th className="px-4 py-2 text-left">Meno</th>
-                    <th className="px-4 py-2 text-left">Email</th>
-                    <th className="px-4 py-2 text-left">Od kedy</th>
-                    <th className="px-4 py-2 text-left">Do kedy</th>
-                    <th className="px-4 py-2 text-left">Meno</th>
-                    <th className="px-4 py-2 text-left">Cena</th>
-                    <th className="px-4 py-2 text-left">Akcie</th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Meno
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Email
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Od kedy
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Do kedy
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Meno
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Cena
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Akcie
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.map((booking) => (
-                    <tr key={booking.id} className="text-center border-t">
-                      <td className="px-4 py-2">{booking.Room.name}</td>
-                      <td className="px-4 py-2">{booking.User.email}</td>
-                      <td className="px-4 py-2">
+                    <tr key={booking.id} className="border-t">
+                      <td className="px-4 py-2 text-sm">{booking.Room.name}</td>
+                      <td className="px-4 py-2 text-sm">
+                        {booking.User.email}
+                      </td>
+                      <td className="px-4 py-2 text-sm">
                         {booking.StartingDate.split("T")[0]}
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-sm">
                         {booking.EndingDate.split("T")[0]}
                       </td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-sm">
                         {booking.User.name} {booking.User.surname}
                       </td>
-                      <td className="px-4 py-2">{booking.Room.price}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 text-sm">
+                        {booking.Room.price}
+                      </td>
+                      <td className="px-4 py-2 text-sm">
                         <button
-                          className="bg-red-500 text-white px-4 py-2 rounded"
+                          className="bg-red-500 text-white p-4   rounded hover:bg-red-600 transition"
                           onClick={() => handleDelete(booking.id)}
                         >
                           Odstrániť
                         </button>
-                        <button className="bg-green-500 text-white px-4 py-2 rounded">
+                        <button
+                          className="bg-green-500 text-white p-4  rounded hover:bg-green-600 transition"
+                          onClick={() => handleDelete(booking.id)}
+                        >
                           Potvrdit
                         </button>
                       </td>
@@ -108,8 +126,8 @@ export default function ReservationTable() {
                   ))}
                 </tbody>
               </table>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

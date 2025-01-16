@@ -157,7 +157,7 @@ export default function RoomList() {
                     Rezervovať
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-4xl bg-gray-900 rounded-lg shadow-lg p-8">
+                <DialogContent className="max-w-4xl lg:h-[700px]  bg-gray-900 rounded-lg shadow-lg p-8 overflow-y-auto">
                   <DialogHeader>
                     <DialogTitle className="text-3xl pb-5 text-white font-bold">
                       {selectedRoom?.name}

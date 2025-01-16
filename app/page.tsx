@@ -19,23 +19,23 @@ const Images = [
     alt: "hotelova izba 1",
   },
   {
-    src: "/obr1.png",
+    src: "/obr7.png",
     alt: "hotelova izba2",
   },
   {
-    src: "/obr1.png",
+    src: "/obr3.png",
     alt: "hotelova izba3",
   },
   {
-    src: "/obr1.png",
+    src: "/obr5.png",
     alt: "hotelova izba4",
   },
   {
-    src: "/obr1.png",
+    src: "/obr9.png",
     alt: "hotelova izba5",
   },
   {
-    src: "/obr1.png",
+    src: "/obr10.png",
     alt: "hotelova izba6",
   },
 ];
