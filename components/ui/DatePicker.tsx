@@ -28,6 +28,7 @@ export function DatePickerWithRange({
 }: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>();
   const [error, setError] = React.useState<string | null>(null);
+  const [isOpen, setIsOpen] = React.useState(false); // Stav pre otvorenie Popoveru
 
   const MAX_NIGHTS = 21;
 
@@ -49,9 +50,13 @@ export function DatePickerWithRange({
     setDate(range);
   };
 
+  const togglePopover = () => {
+    setIsOpen(!isOpen); // Ručne prepínať stav Popoveru
+  };
+
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover>
+      <Popover open={isOpen} onOpenChange={togglePopover}>
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -60,6 +65,7 @@ export function DatePickerWithRange({
               "w-full sm:w-[300px] justify-start text-left font-normal", // Zabezpečí plnú šírku na mobiloch
               !date && "text-muted-foreground"
             )}
+            onClick={togglePopover} // Pri kliknutí na tlačidlo sa otvorí Popover
           >
             <CalendarIcon />
             {date?.from ? (
@@ -76,26 +82,28 @@ export function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            initialFocus
-            mode="range"
-            selected={date}
-            onSelect={(range) => {
-              // Obmedzenie výberu maximálne na 21 nocí
-              if (range?.from && range?.to) {
-                const maxToDate = addDays(range.from, MAX_NIGHTS);
-                if (range.to > maxToDate) {
-                  range.to = maxToDate;
-                  toast.warning(`Maximálny počet nocí je ${MAX_NIGHTS}`);
-                  // Automaticky obmedzíme koncový dátum
+        {isOpen && (
+          <PopoverContent className="w-auto p-0" align="start">
+            <Calendar
+              initialFocus
+              mode="range"
+              selected={date}
+              onSelect={(range) => {
+                // Obmedzenie výberu maximálne na 21 nocí
+                if (range?.from && range?.to) {
+                  const maxToDate = addDays(range.from, MAX_NIGHTS);
+                  if (range.to > maxToDate) {
+                    range.to = maxToDate;
+                    toast.warning(`Maximálny počet nocí je ${MAX_NIGHTS}`);
+                    // Automaticky obmedzíme koncový dátum
+                  }
                 }
-              }
-              handleDateChange(range);
-            }}
-            numberOfMonths={2}
-          />
-        </PopoverContent>
+                handleDateChange(range);
+              }}
+              numberOfMonths={2}
+            />
+          </PopoverContent>
+        )}
       </Popover>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
