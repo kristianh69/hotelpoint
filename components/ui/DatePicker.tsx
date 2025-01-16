@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import { differenceInDays, format, addDays } from "date-fns";
-import { Calendar as CalendarIcon, TriangleAlert } from "lucide-react";
+import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
@@ -28,7 +28,6 @@ export function DatePickerWithRange({
 }: DatePickerWithRangeProps) {
   const [date, setDate] = React.useState<DateRange | undefined>();
   const [error, setError] = React.useState<string | null>(null);
-  const [isOpen, setIsOpen] = React.useState(false); // Stav pre otvorenie Popoveru
 
   const MAX_NIGHTS = 21;
 
@@ -50,13 +49,9 @@ export function DatePickerWithRange({
     setDate(range);
   };
 
-  const togglePopover = () => {
-    setIsOpen(!isOpen); // Ručne prepínať stav Popoveru
-  };
-
   return (
     <div className={cn("grid gap-2", className)}>
-      <Popover open={isOpen} onOpenChange={togglePopover}>
+      <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -65,7 +60,6 @@ export function DatePickerWithRange({
               "w-full sm:w-[300px] justify-start text-left font-normal", // Zabezpečí plnú šírku na mobiloch
               !date && "text-muted-foreground"
             )}
-            onClick={togglePopover} // Pri kliknutí na tlačidlo sa otvorí Popover
           >
             <CalendarIcon />
             {date?.from ? (
@@ -82,8 +76,8 @@ export function DatePickerWithRange({
             )}
           </Button>
         </PopoverTrigger>
-        {isOpen && (
-          <PopoverContent className="w-auto p-0" align="start">
+        <PopoverContent className="w-auto p-0" align="start">
+          <div className="overflow-hidden">
             <Calendar
               initialFocus
               mode="range"
@@ -102,8 +96,8 @@ export function DatePickerWithRange({
               }}
               numberOfMonths={2}
             />
-          </PopoverContent>
-        )}
+          </div>
+        </PopoverContent>
       </Popover>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
