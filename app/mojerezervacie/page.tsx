@@ -46,7 +46,9 @@ const MyBooking = () => {
       });
 
       if (response.ok) {
-        setBookings((prev) => prev.filter((booking) => booking.id !== id));
+        setBookings((prev) =>
+          prev.filter((booking) => Number(booking.id) !== id)
+        );
       } else {
         const data = await response.json();
         alert(data.message || "Nepodarilo sa odstrániť rezerváciu.");
@@ -77,7 +79,7 @@ const MyBooking = () => {
                 Cena: {booking.Room.price} €
               </p>
               <button
-                onClick={() => handleDelete(booking.id)}
+                onClick={() => handleDelete(Number(booking.id))}
                 className="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
               >
                 Odstrániť
