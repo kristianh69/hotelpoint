@@ -95,9 +95,9 @@ export const DELETE = auth(async (req) => {
       query.BookedBy = req.auth.user.id;
     }
 
-    const deletedCount = await Booking.destroy({
+    const deletedCount = (await Booking.destroy({
       where: query,
-    });
+    })) as any;
 
     if (deletedCount === 0) {
       return NextResponse.json(
