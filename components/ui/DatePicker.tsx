@@ -1,9 +1,7 @@
-//@ts-nocheck
-
 "use client";
 
 import * as React from "react";
-import { differenceInDays, format, addDays } from "date-fns";
+import { format, addDays, differenceInDays } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
