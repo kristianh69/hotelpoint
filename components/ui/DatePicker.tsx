@@ -57,7 +57,7 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-normal",
+              "w-full sm:w-[300px] justify-start text-left font-normal", // Zabezpečí plnú šírku na mobiloch
               !date && "text-muted-foreground"
             )}
           >
