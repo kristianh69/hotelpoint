@@ -3,7 +3,7 @@ import { Booking, Room, User } from "@/database";
 
 import { NextResponse } from "next/server";
 
-export const GET = auth(async (req) => {
+export const GET = auth(async (req): Promise<any> => {
   if (!req.auth || req.auth.user.role !== "admin") {
     return NextResponse.json({ message: "Unauthenticated" }, { status: 401 });
   }
