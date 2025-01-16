@@ -33,4 +33,4 @@ export const DELETE = auth(async (req) => {
       { status: 500 }
     );
   }
-});
+}) as any;
