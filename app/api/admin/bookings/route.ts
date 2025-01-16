@@ -3,7 +3,7 @@ import { Booking, Room, User } from "@/database";
 
 import { NextResponse } from "next/server";
 
-export const GET = auth(async (req): Promise<any> => {
+export const GET = auth(async (req) => {
   if (!req.auth || req.auth.user.role !== "admin") {
     return NextResponse.json({ message: "Unauthenticated" }, { status: 401 });
   }
@@ -25,4 +25,4 @@ export const GET = auth(async (req): Promise<any> => {
     console.error("Chyba pri načítaní rezervácií:", error);
     return NextResponse.json({ message: "chyba" }, { status: 500 });
   }
-});
+}) as any;
