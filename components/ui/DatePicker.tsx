@@ -77,7 +77,6 @@ export function DatePickerWithRange({
         <PopoverContent className="w-auto p-0" align="start">
           <div className="overflow-hidden">
             <Calendar
-              initialFocus
               mode="range"
               selected={date}
               onSelect={(range) => {
