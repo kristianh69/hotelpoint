@@ -78,12 +78,26 @@ const MyBooking = () => {
               <p className="mt-2 text-green-400 font-bold">
                 Cena: {booking.Room.price} €
               </p>
-              <button
-                onClick={() => handleDelete(Number(booking.id))}
-                className="mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
-              >
-                Odstrániť
-              </button>
+              {booking.Confirmed ? (
+                <p className="text-sm  mt-2 text-green-400">
+                  Rezervacia je potvrdena
+                </p>
+              ) : (
+                <p className="text-sm  text-gray-400 mt-2">
+                  cakajte napodvrdenie od admina
+                </p>
+              )}
+
+              {booking.Confirmed ? (
+                <p></p>
+              ) : (
+                <button
+                  onClick={() => handleDelete(Number(booking.id))}
+                  className="mt-6 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
+                >
+                  Odstrániť
+                </button>
+              )}
             </li>
           ))}
         </ul>

@@ -56,7 +56,7 @@ export const POST = auth(async (req) => {
 
     if (overlappingBookings.length > 0) {
       return NextResponse.json(
-        { message: "The room is already booked for the given dates." },
+        { message: "Tato izba je v tomto datume obsadena." },
         { status: 400 }
       );
     }

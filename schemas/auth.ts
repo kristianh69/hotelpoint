@@ -60,3 +60,7 @@ export const bookingSchema = yup.object().shape({
 export const deleteBooking = yup.object().shape({
   id: yup.string().required(),
 });
+
+export const confirmedBooking = yup.object().shape({
+  id: yup.string().required(),
+});

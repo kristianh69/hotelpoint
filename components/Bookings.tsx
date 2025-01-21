@@ -32,7 +32,7 @@ export default function ReservationTable() {
     if (!confirm("Naozaj chcete zmazať rezerváciu?")) return;
 
     try {
-      const response = await fetch(`/api/booking`, {
+      const response = await fetch(`/api/admin/bookings`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -53,8 +53,36 @@ export default function ReservationTable() {
     }
   };
 
+  const handleConfirm = async (id: string) => {
+    if (!confirm("Naozaj chcete potvrdiť rezerváciu?")) return;
+
+    try {
+      const response = await fetch(`/api/admin/bookings`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        const updatedBookings = data.map((booking) =>
+          booking.id === id ? { ...booking, Confirmed: true } : booking
+        );
+        setData(updatedBookings);
+        alert("Rezervácia bola úspešne potvrdená.");
+      } else {
+        const data = await response.json();
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error("Chyba pri potvrdení rezervácie:", error);
+      alert("Došlo k chybe pri potvrdení rezervácie.");
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-screen ">
+    <div className="flex flex-col min-h-screen">
       <div className="flex justify-center mt-16 px-4">
         <div className="w-full max-w-6xl bg-white p-6 shadow-lg rounded-lg">
           {loading ? (
@@ -109,17 +137,23 @@ export default function ReservationTable() {
                         {booking.Room.price}
                       </td>
                       <td className="px-4 py-2 text-sm">
+                        {booking.Confirmed ? (
+                          <p></p>
+                        ) : (
+                          <>
+                            <button
+                              className="bg-green-500 text-white p-4 rounded hover:bg-green-600 transition"
+                              onClick={() => handleConfirm(booking.id)}
+                            >
+                              Potvrdiť
+                            </button>
+                          </>
+                        )}
                         <button
-                          className="bg-red-500 text-white p-4   rounded hover:bg-red-600 transition"
+                          className="bg-red-500 text-white p-4 rounded hover:bg-red-600 transition"
                           onClick={() => handleDelete(booking.id)}
                         >
                           Odstrániť
-                        </button>
-                        <button
-                          className="bg-green-500 text-white p-4  rounded hover:bg-green-600 transition"
-                          onClick={() => handleDelete(booking.id)}
-                        >
-                          Potvrdit
                         </button>
                       </td>
                     </tr>

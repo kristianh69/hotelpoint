@@ -105,8 +105,8 @@ export default function RoomList() {
   };
 
   return (
-    <div className="p-6 pt-36 bg-black min-h-screen">
-      <div className=" absolute top-20 right-6">
+    <div className="p-6 pt-36 bg-black in-h-screen">
+      <div className=" absolute top-20 right-6 ">
         <a
           href="/mojerezervacie"
           className="py-3 px-6 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-400 transition-colors duration-200"
@@ -114,6 +114,7 @@ export default function RoomList() {
           Moje rezervovacie
         </a>
       </div>
+
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {rooms.map((room) => (
           <li

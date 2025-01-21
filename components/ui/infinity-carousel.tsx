@@ -86,7 +86,7 @@ export const InfiniteMovingCards = ({
         )}
       >
         {items.map((item, idx) => (
-          <Image
+          <img
             key={item.alt}
             src={item.src}
             alt={item.alt}

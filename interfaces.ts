@@ -21,4 +21,5 @@ export interface Booking {
   StartingDate: string;
   EndingDate: string;
   User: User;
+  Confirmed: boolean;
 }
