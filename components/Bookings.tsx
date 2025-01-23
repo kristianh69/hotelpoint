@@ -32,7 +32,7 @@ export default function ReservationTable() {
     if (!confirm("Naozaj chcete zmazať rezerváciu?")) return;
 
     try {
-      const response = await fetch(`/api/admin/bookings`, {
+      const response = await fetch(`/api/booking`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,6 @@ export default function ReservationTable() {
         alert(data.message || "Nepodarilo sa odstrániť rezerváciu.");
       }
     } catch (error) {
-      console.error("Chyba pri odstraňovaní rezervácie:", error);
       alert("Došlo k chybe pri odstraňovaní rezervácie.");
     }
   };
@@ -66,17 +65,17 @@ export default function ReservationTable() {
       });
 
       if (response.ok) {
-        const updatedBookings = data.map((booking) =>
-          booking.id === id ? { ...booking, Confirmed: true } : booking
+        setData((prevData) =>
+          prevData.map((booking) =>
+            booking.id === id ? { ...booking, Confirmed: true } : booking
+          )
         );
-        setData(updatedBookings);
         alert("Rezervácia bola úspešne potvrdená.");
       } else {
         const data = await response.json();
         alert(data.message);
       }
     } catch (error) {
-      console.error("Chyba pri potvrdení rezervácie:", error);
       alert("Došlo k chybe pri potvrdení rezervácie.");
     }
   };
@@ -110,10 +109,7 @@ export default function ReservationTable() {
                       Meno
                     </th>
                     <th className="px-4 py-2 text-left text-sm font-semibold">
-                      Cena
-                    </th>
-                    <th className="px-4 py-2 text-left text-sm font-semibold">
-                      Akcie
+                      Cena za noc
                     </th>
                   </tr>
                 </thead>
@@ -136,21 +132,19 @@ export default function ReservationTable() {
                       <td className="px-4 py-2 text-sm">
                         {booking.Room.price}
                       </td>
-                      <td className="px-4 py-2 text-sm">
+                      <td className="px-4 py-2 text-sm flex gap-2">
                         {booking.Confirmed ? (
                           <p></p>
                         ) : (
-                          <>
-                            <button
-                              className="bg-green-500 text-white p-4 rounded hover:bg-green-600 transition"
-                              onClick={() => handleConfirm(booking.id)}
-                            >
-                              Potvrdiť
-                            </button>
-                          </>
+                          <button
+                            className="bg-green-500 text-white px-4 py-2 rounded w-full max-w-[120px] hover:bg-green-600 transition"
+                            onClick={() => handleConfirm(booking.id)}
+                          >
+                            Potvrdiť
+                          </button>
                         )}
                         <button
-                          className="bg-red-500 text-white p-4 rounded hover:bg-red-600 transition"
+                          className="bg-red-500 text-white px-4 py-2 rounded w-full max-w-[120px] hover:bg-red-600 transition"
                           onClick={() => handleDelete(booking.id)}
                         >
                           Odstrániť

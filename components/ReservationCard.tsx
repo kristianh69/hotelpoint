@@ -19,17 +19,22 @@ export default function RoomList() {
   const [numberOfNights, setNumberOfNights] = useState<number>(0);
   const [fromDate, setFromDate] = useState<Date | null>(null);
   const [toDate, setToDate] = useState<Date | null>(null);
+  const [startingDate, setStartingDate] = useState<string | null>(null);
+  const [endingDate, setEndingDate] = useState<string | null>(null);
   const session = useSession();
 
   useEffect(() => {
     const fetchRooms = async () => {
-      const response = await fetch("api/rooms");
+      const searchParams = new URLSearchParams();
+      startingDate && searchParams.append("startingDate", startingDate);
+      endingDate && searchParams.append("endingDate", endingDate);
+      const response = await fetch("api/rooms?" + searchParams.toString());
       const data = await response.json();
       setRooms(data);
     };
 
     fetchRooms();
-  }, []);
+  }, [startingDate, endingDate]);
 
   const calculateTotalPrice = (room: Room | null): number => {
     return room ? room.price * numberOfNights : 0;
@@ -105,13 +110,31 @@ export default function RoomList() {
   };
 
   return (
-    <div className="p-6 pt-36 bg-black in-h-screen">
-      <div className=" absolute top-20 right-6 ">
+    <div className="p-6 pt-24 min-h-screen text-white">
+      {/* Filter sekcia */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div className="flex items-center gap-4 mb-4 md:mb-0">
+          <DatePickerWithRange
+            onDateChange={(nights, fromDate, toDate) => {
+              setStartingDate(fromDate?.toISOString().split("T")[0] || null);
+              setEndingDate(toDate?.toISOString().split("T")[0] || null);
+            }}
+          />
+          <button
+            className="py-2 px-4 bg-red-500 text-white rounded-lg hover:bg-red-400 transition-colors duration-200"
+            onClick={() => {
+              setStartingDate(null);
+              setEndingDate(null);
+            }}
+          >
+            Zrušiť filter
+          </button>
+        </div>
         <a
           href="/mojerezervacie"
           className="py-3 px-6 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-400 transition-colors duration-200"
         >
-          Moje rezervovacie
+          Moje rezervácie
         </a>
       </div>
 
