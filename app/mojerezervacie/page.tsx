@@ -8,6 +8,19 @@ const MyBooking = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const calculateTotalPrice = (
+    startingDate: string,
+    endingDate: string,
+    pricePerNight: number
+  ): number => {
+    const startDate = new Date(startingDate);
+    const endDate = new Date(endingDate);
+
+    const days =
+      (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24) + 1;
+    return days * pricePerNight;
+  };
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -65,41 +78,53 @@ const MyBooking = () => {
         <p className="text-center text-red-600">{error}</p>
       ) : bookings.length > 0 ? (
         <ul className="space-y-6">
-          {bookings.map((booking) => (
-            <li
-              key={booking.id}
-              className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700"
-            >
-              <h2 className="text-2xl font-semibold">{booking.Room.name}</h2>
-              <p className="mt-2 text-gray-400">
-                Dátum: {booking.StartingDate.split("T")[0]} -{" "}
-                {booking.EndingDate.split("T")[0]}
-              </p>
-              <p className="mt-2 text-green-400 font-bold">
-                Cena: {booking.Room.price} €
-              </p>
-              {booking.Confirmed ? (
-                <p className="text-sm  mt-2 text-green-400">
-                  Rezervacia je potvrdena
-                </p>
-              ) : (
-                <p className="text-sm  text-gray-400 mt-2">
-                  cakajte napodvrdenie od admina
-                </p>
-              )}
+          {bookings.map((booking) => {
+            // Vypočítaj celkovú cenu pre každú rezerváciu
+            const totalPrice = calculateTotalPrice(
+              booking.StartingDate,
+              booking.EndingDate,
+              booking.Room.price
+            );
 
-              {booking.Confirmed ? (
-                <p></p>
-              ) : (
-                <button
-                  onClick={() => handleDelete(Number(booking.id))}
-                  className="mt-6 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
-                >
-                  Odstrániť
-                </button>
-              )}
-            </li>
-          ))}
+            return (
+              <li
+                key={booking.id}
+                className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700"
+              >
+                <h2 className="text-2xl font-semibold">{booking.Room.name}</h2>
+                <p className="mt-2 text-gray-400">
+                  Dátum: {booking.StartingDate.split("T")[0]} -{" "}
+                  {booking.EndingDate.split("T")[0]}
+                </p>
+                <p className="mt-2 text-green-400 font-bold">
+                  Cena za noc: {booking.Room.price} €
+                </p>
+                <p className="mt-2 text-green-400 font-bold">
+                  Celková cena: {totalPrice} €
+                </p>
+                {booking.Confirmed ? (
+                  <p className="text-sm mt-2 text-green-400">
+                    Rezervácia je potvrdená
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-400 mt-2">
+                    Čakajte na potvrdenie od admina
+                  </p>
+                )}
+
+                {booking.Confirmed ? (
+                  <p></p>
+                ) : (
+                  <button
+                    onClick={() => handleDelete(Number(booking.id))}
+                    className="mt-6 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
+                  >
+                    Odstrániť
+                  </button>
+                )}
+              </li>
+            );
+          })}
         </ul>
       ) : (
         <p className="text-center text-gray-400">

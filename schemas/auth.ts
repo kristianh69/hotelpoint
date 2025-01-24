@@ -6,6 +6,7 @@ export const registerSchema = yup.object({
   email: yup
     .string()
     .email("Zadaný e-mail nie je platný")
+    .matches(/^[\w-\.]+@[\w-]+\.[a-zA-Z]{2,6}$/, "E-mail ma nespravny format")
     .required("E-mail je povinný"),
 
   password: yup

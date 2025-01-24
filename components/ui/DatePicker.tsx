@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { format, addDays, differenceInDays } from "date-fns";
+import { format, addDays, differenceInDays, startOfToday } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { DateRange } from "react-day-picker";
 
@@ -28,6 +28,7 @@ export function DatePickerWithRange({
   const [error, setError] = React.useState<string | null>(null);
 
   const MAX_NIGHTS = 21;
+  const today = startOfToday();
 
   const handleDateChange = (range: DateRange | undefined) => {
     if (range?.from && range?.to) {
@@ -92,6 +93,7 @@ export function DatePickerWithRange({
                 handleDateChange(range);
               }}
               numberOfMonths={2}
+              disabled={{ before: today }}
             />
           </div>
         </PopoverContent>
