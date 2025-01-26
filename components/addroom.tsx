@@ -29,7 +29,7 @@ const AddRoomForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/admin/rooms", {
+      const response = await fetch("/api/admin/addrooms", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
