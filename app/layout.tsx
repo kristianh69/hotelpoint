@@ -21,9 +21,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className="bg-black h-screen">
         <SessionProvider>
-          <Head>
-            <link rel="icon" href="@/favicon.ico" />
-          </Head>
           <Navbar />
           <main>{children}</main>
           <Footer />
