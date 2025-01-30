@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import AddRoomForm from "@/components/AddRoomForm";
+import AddRoomForm from "@/components/addroom";
 
 import { redirect } from "next/navigation";
 import React from "react";

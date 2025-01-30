@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const AddRoom = () => {
+const AddRoomForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     numberOfBeds: "",
@@ -155,4 +155,4 @@ const AddRoom = () => {
   );
 };
 
-export default AddRoom;
+export default AddRoomForm;
