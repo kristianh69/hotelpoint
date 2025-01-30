@@ -27,8 +27,7 @@ const Navbar = () => {
               <span className="font-bold text-xl">HotelPoint</span>
             </a>
           </div>
-
-          <div className="hidden md:flex space-x-4">
+          <div className="relative ml-auto">
             <DropdownMenu.DropdownMenu>
               {session.data?.user.role === "admin" && (
                 <DropdownMenu.DropdownMenuTrigger className="px-3 py-2 rounded-md hover:bg-gray-700">
@@ -62,8 +61,11 @@ const Navbar = () => {
                 </DropdownMenu.DropdownMenuItem>
               </DropdownMenu.DropdownMenuContent>
             </DropdownMenu.DropdownMenu>
+          </div>
 
-            <NavItem href="/rezervovanie" label="Rezervácie" />
+          {/* Desktop menu */}
+          <div className="hidden md:flex space-x-4">
+            <NavItem href="/rezervovanie" label="Rezervovať" />
             {session.status === "authenticated" ? (
               <button
                 className="flex items-center px-4 py-2 bg-sky-500 text-white font-medium rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300"
