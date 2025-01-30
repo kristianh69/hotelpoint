@@ -73,7 +73,7 @@ const MyBooking = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6 pt-32">
+    <div className="min-h-screen text-white p-6 pt-32">
       {error ? (
         <p className="text-center text-red-600">{error}</p>
       ) : bookings.length > 0 ? (
