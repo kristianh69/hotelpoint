@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-const RegisterForm: React.FC = () => {
+const RegisterForm = () => {
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
   const [email, setEmail] = useState<string>("");

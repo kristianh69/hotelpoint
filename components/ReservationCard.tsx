@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { Room } from "@/interfaces";
 
-export default function RoomList() {
+const ReservationCard = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
   const [numberOfNights, setNumberOfNights] = useState<number>(0);
@@ -235,4 +235,6 @@ export default function RoomList() {
       </ul>
     </div>
   );
-}
+};
+
+export default ReservationCard;

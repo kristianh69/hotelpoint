@@ -10,7 +10,7 @@ const notfound = () => {
         >
           Ooops
         </h1>
-        <p className="kablammo">404 EROR !</p>
+        <p>404 EROR !</p>
         <a href="/" className="">
           <button className=" border-solid bg-orange-400 m-5 p-2 border-r-2">
             Vrať sa

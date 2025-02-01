@@ -3,10 +3,23 @@
 import React, { useEffect, useState } from "react";
 import { Booking } from "./../interfaces";
 
-export default function ReservationTable() {
+const Bookings = () => {
   const [data, setData] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const calculateTotalPrice = (
+    startingDate: string,
+    endingDate: string,
+    pricePerNight: number
+  ): number => {
+    const startDate = new Date(startingDate);
+    const endDate = new Date(endingDate);
+
+    const days =
+      (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24) + 1;
+    return days * pricePerNight;
+  };
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -111,6 +124,9 @@ export default function ReservationTable() {
                     <th className="px-4 py-2 text-left text-sm font-semibold">
                       Cena za noc
                     </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Celková cena
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -130,7 +146,15 @@ export default function ReservationTable() {
                         {booking.User.name} {booking.User.surname}
                       </td>
                       <td className="px-4 py-2 text-sm">
-                        {booking.Room.price}
+                        {booking.Room.price} €
+                      </td>
+                      <td className="px-4 py-2 text-sm font-semibold">
+                        {calculateTotalPrice(
+                          booking.StartingDate,
+                          booking.EndingDate,
+                          booking.Room.price
+                        )}{" "}
+                        €
                       </td>
                       <td className="px-4 py-2 text-sm flex gap-2">
                         {booking.Confirmed ? (
@@ -160,4 +184,6 @@ export default function ReservationTable() {
       </div>
     </div>
   );
-}
+};
+
+export default Bookings;
