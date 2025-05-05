@@ -54,7 +54,7 @@ const Navbar = () => {
               )}
               <DropdownMenu.DropdownMenuContent>
                 <DropdownMenu.DropdownMenuItem>
-                  <a href="/addroom">Pridať hotel</a>
+                  <a href="/addroom">Pridať izby</a>
                 </DropdownMenu.DropdownMenuItem>
                 <DropdownMenu.DropdownMenuItem>
                   <a href="/rezervacie">Rezervácie</a>

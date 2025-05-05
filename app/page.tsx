@@ -5,7 +5,12 @@ import { Room } from "@/database";
 
 const HomePage = async () => {
   const Images =
-    (await Room.findAll({ attributes: ["imageUrl", "description"] }))
+    (
+      await Room.findAll({
+        attributes: ["imageUrl", "description"],
+        where: { active: true }, // ← iba aktívne izby
+      })
+    )
       .map((i) => ({ src: i.imageUrl || "", alt: i.description || "" }))
       .concat(ImagesPlaceholder) || ImagesPlaceholder;
   return (
