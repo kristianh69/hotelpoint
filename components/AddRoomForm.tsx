@@ -48,7 +48,6 @@ const AddRoomForm = () => {
         alert("Izba bola úspešne pridaná!");
       } else {
         const errorData = await response.json();
-        console.log(errorData);
         if (errorData.errors) {
           setErrors(errorData.errors);
         } else {
@@ -62,7 +61,7 @@ const AddRoomForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md space-y-4"
@@ -81,7 +80,7 @@ const AddRoomForm = () => {
         <input
           type="text"
           name="numberOfBeds"
-          value={formData.numberOfBeds || ""}
+          value={formData.numberOfBeds}
           onChange={handleChange}
           placeholder="Počet postelí"
           className="w-full border rounded p-2"
@@ -92,7 +91,7 @@ const AddRoomForm = () => {
           name="tags"
           value={formData.tags}
           onChange={handleChange}
-          placeholder="Kratky Popis"
+          placeholder="Krátky popis"
           className="w-full border rounded p-2"
           required
         />
@@ -109,7 +108,7 @@ const AddRoomForm = () => {
         <input
           type="text"
           name="price"
-          value={formData.price || ""}
+          value={formData.price}
           onChange={handleChange}
           placeholder="Cena (€)"
           className="w-full border rounded p-2"
@@ -126,27 +125,30 @@ const AddRoomForm = () => {
           required
         />
 
-        {formData.imageUrl && (
-          <div className="flex justify-center">
+        {/* Box pre náhľad obrázka s pevnou výškou */}
+        <div className="flex justify-center items-center h-40 bg-gray-100 rounded-md overflow-hidden">
+          {formData.imageUrl ? (
             <img
               src={formData.imageUrl}
               alt="Náhľad obrázka"
-              className="rounded-md max-w-full max-h-40"
+              className="object-contain h-full"
             />
-          </div>
-        )}
+          ) : (
+            <span className="text-gray-400 text-sm">Náhľad obrázka</span>
+          )}
+        </div>
 
         {errors.length > 0 && (
           <div className="text-red-500 text-sm space-y-2">
-            {errors.map((errors, index) => (
-              <p key={index}>{errors}</p>
+            {errors.map((error, index) => (
+              <p key={index}>{error}</p>
             ))}
           </div>
         )}
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded"
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
         >
           Pridať izbu
         </button>
